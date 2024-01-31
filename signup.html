@@ -187,9 +187,11 @@
 
             <!-- username and password -->
             <input type="text" id="nameField" name="name" placeholder="Full Name"><br>
-            <input type="text" id="dobField" name="dob" placeholder="Date of Birth"><br>
+            <input type="text" id="dobField" name="dob" placeholder="Date of Birth(mm-dd-yyyy)"><br>
             <input type="text" id="usernameField" name="username" placeholder="Username"><br>
+            <input type="text" id="emailField" name="email" placeholder="Email"><br>
             <input type="password" id="passwordField" name="password" placeholder="Password"><br>
+
 
             <!-- submit button -->
             <input type="hidden" id="csrfTokenField" name="csrf_token" value="">
@@ -211,8 +213,9 @@
         async function submitForm() {
             // get the elements (username, password, etc)
             const name = document.getElementById('nameField').value; // full name
-            const dob = document.getElementById('dob').value; // date of birth
+            const dob = document.getElementById('dobField').value; // date of birth
             const uid = document.getElementById('usernameField').value; // username
+            const email = document.getElementById('emailField').value; // email
             const password = document.getElementById('passwordField').value; // password
 
             var form = document.getElementById('myForm');
@@ -231,7 +234,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name, uid, password, dob }) // convert payload to JSON
+                    body: JSON.stringify({ name, uid, password, dob, email }) // convert payload to JSON
                 });
 
                 // error occured and login didn't work
