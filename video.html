@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Video</title>
+    <style>
+        body {
+            background: #1c1c1e;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        header {
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        header a {
+            text-decoration: none;
+        }
+
+        article {
+            margin-bottom: 20px;
+        }
+
+        /* top nav bar stuff dont worry bout this for now */
+        #inputField {
+            width: 70%;
+            background-color: #2c2c2e;
+            padding: 1em;
+            border: none;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            border-radius: 5000px;
+            box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+            color: #fff;
+            font-family: Montserrat, sans-serif;
+            font-weight: 500;
+
+            transition: all 0.2s ease-in-out;
+
+            &[type="upload"] {
+                width: 10%;
+
+                &:hover {
+                    cursor: pointer;
+                    background: rgba(255, 255, 255, 0.2);
+                }
+
+                &:active {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+            }
+
+            &[type="upload2"] {
+                width: 10%;
+
+                &:hover {
+                    cursor: pointer;
+                    background: rgba(255, 255, 255, 0.2);
+                }
+
+                &:active {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+            }
+        }
+
+        /* container object defining video, recommended, and description */
+        #container {
+            border-radius: 20px;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            transition: all 0.2s ease-in-out;
+            color: white;
+            padding: 20px;
+
+
+            &:hover {
+                box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+            }
+
+            &[type="recommend"] {
+                grid-area: 2 / 1 / 3 / 2;
+            }
+
+            &[type="description"] {
+                grid-area: 1 / 2 / 3 / 3;
+            }
+
+            &[type="video"] {
+                grid-area: 1 / 1 / 2 / 2;
+                text-align: center;
+            }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 75% auto;
+            grid-template-rows: repeat(2, auto);
+            grid-column-gap: 10px;
+            grid-row-gap: 10px; 
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="/youtube/" id="inputField" type="upload">HOME</a>
+        <input type="text" id="inputField" name="searchBar" required minlength="1" placeholder="Search">
+        <button id="inputField" type="upload">Upload</button>
+    </header>
+
+    <!-- <footer>    </footer> -->
+    <div class="grid">
+        <!-- video player -->
+        <div id="container" type="video">
+            <video width="75%" height="100%" controls>
+                <source src="test.mp4" type="video/mp4">
+                <source src="">
+            </video>
+        </div>
+
+        <!-- recommended section and description -->
+        <div id="container" type="description">Recommended Videos go here</div>
+        <div id="container" type="recommended">
+            DESCRIPTION GOES HERE
+
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+            aliqua. Integer quis auctor elit sed vulputate mi sit. Pellentesque elit ullamcorper dignissim cras tincidunt lobortis
+            feugiat. Nisl rhoncus mattis rhoncus urna neque viverra justo nec ultrices. Augue mauris augue neque gravida in
+            fermentum. Eu consequat ac felis donec et odio pellentesque diam volutpat. Nec dui nunc mattis enim. Pharetra et
+            ultrices neque ornare aenean euismod elementum. Feugiat in ante metus dictum at tempor commodo ullamcorper a. Phasellus
+            faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis. At urna condimentum mattis pellentesque id.
+            
+            Sit amet venenatis urna cursus. Facilisis magna etiam tempor orci eu lobortis elementum. Sapien faucibus et molestie ac
+            feugiat sed. Ac tortor dignissim convallis aenean et tortor. Elementum pulvinar etiam non quam. Commodo ullamcorper a
+            lacus vestibulum. Eget est lorem ipsum dolor. Aliquet enim tortor at auctor urna nunc. Suspendisse potenti nullam ac
+            tortor vitae purus faucibus ornare. Sem viverra aliquet eget sit. Morbi tristique senectus et netus et malesuada fames.
+            Mauris nunc congue nisi vitae. Eget velit aliquet sagittis id consectetur purus. Dui accumsan sit amet nulla facilisi
+            morbi. Tincidunt augue interdum velit euismod in. Erat pellentesque adipiscing commodo elit at imperdiet. Aliquam
+            ultrices sagittis orci a scelerisque. Quam vulputate dignissim suspendisse in est ante.
+            
+            Proin sed libero enim sed faucibus turpis in. Interdum consectetur libero id faucibus nisl tincidunt eget. Orci eu
+            lobortis elementum nibh tellus molestie nunc non blandit. Nisi vitae suscipit tellus mauris a diam. Fermentum posuere
+            urna nec tincidunt praesent semper. Pretium aenean pharetra magna ac placerat vestibulum lectus mauris ultrices. Sed sed
+            risus pretium quam vulputate dignissim suspendisse. Pulvinar neque laoreet suspendisse interdum. Neque ornare aenean
+            euismod elementum. Dui id ornare arcu odio ut sem nulla pharetra. Nulla posuere sollicitudin aliquam ultrices sagittis.
+            Lobortis mattis aliquam faucibus purus in massa tempor nec feugiat. Nullam non nisi est sit amet. Commodo ullamcorper a
+            lacus vestibulum sed arcu. Pellentesque eu tincidunt tortor aliquam nulla facilisi cras. Et malesuada fames ac turpis
+            egestas.
+            
+            Ultrices neque ornare aenean euismod elementum. Porta lorem mollis aliquam ut. A cras semper auctor neque vitae. Nullam
+            ac tortor vitae purus. Eget egestas purus viverra accumsan in nisl nisi. Nascetur ridiculus mus mauris vitae. Faucibus
+            interdum posuere lorem ipsum dolor sit amet consectetur. Ac auctor augue mauris augue neque. Interdum velit laoreet id
+            donec. Imperdiet dui accumsan sit amet nulla facilisi morbi tempus.
+            
+            Arcu risus quis varius quam quisque id diam vel. Senectus et netus et malesuada fames ac turpis egestas maecenas. Tortor
+            posuere ac ut consequat semper viverra nam libero justo. Vulputate sapien nec sagittis aliquam malesuada. In fermentum
+            posuere urna nec tincidunt praesent semper feugiat. At erat pellentesque adipiscing commodo elit. Ipsum dolor sit amet
+            consectetur adipiscing elit pellentesque. Vitae tortor condimentum lacinia quis vel eros donec. Id ornare arcu odio ut
+            sem nulla pharetra. Duis convallis convallis tellus id.
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>
