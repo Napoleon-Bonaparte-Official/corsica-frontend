@@ -218,15 +218,15 @@
             deleteAccount.addEventListener('click', async function (event) {
                 event.preventDefault();
                 try {
-                    const apiUrl = "http://127.0.0.1:8086/api/users/authenticate"
+                    const apiUrl = "http://127.0.0.1:8086/api/users/update"
 
                     // post request to backend
                     const deleteAccount = await fetch(apiUrl, {
-                        method: 'POST',
+                        method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ uid, delete: true }) //JSON data
+                        body: JSON.stringify({ uid }) //JSON data
                     });
 
                     console.log("account deleted :(");
