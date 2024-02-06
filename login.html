@@ -244,32 +244,55 @@
         </div>
     </div>
 
+    <!-- login success (200) -->
+    <div class="container" id="popupWindow200" style="display: none;">
+        <div class="error">
+            <p><strong>Login Success</strong></p>
+            <p>Login successful!</p>
+            <input id="closeButton200" type="submit" value="Go to Dashboard">
+        </div>
+    </div>
+
     <script>
         // 400 error
         function loginFailure() {
             // the login form elements
-            var popupwindow = document.getElementById("popupWindow400");
-            var closeButton = document.getElementById("closeButton400");
+            var popupWindow400 = document.getElementById("popupWindow400");
+            var closeButton400 = document.getElementById("closeButton400");
 
-            popupWindow.style.display = "block"; // display the window
+            popupWindow400.style.display = "block"; // display the window
 
             // close the window if you click close
-            closeButton.addEventListener("click", function () {
-                popupWindow.style.display = "none";
+            closeButton400.addEventListener("click", function () {
+                popupWindow400.style.display = "none";
             });
         }
 
         // 403 error
         function permissionFailure() {
             // the login form elements
-            var popupwindow = document.getElementById("popupWindow403");
-            var closeButton = document.getElementById("closeButton403");
+            var popupwindow403 = document.getElementById("popupWindow403");
+            var closeButton403 = document.getElementById("closeButton403");
 
-            popupWindow.style.display = "block"; // display the window
+            popupWindow403.style.display = "block"; // display the window
 
             // close the window if you click close
-            closeButton.addEventListener("click", function () {
-                popupWindow.style.display = "none";
+            closeButton403.addEventListener("click", function () {
+                popupWindow403.style.display = "none";
+            });
+        }
+
+        // // 200 success
+        function loginSuccess() {
+            // the login form elements
+            var popupwindow200 = document.getElementById("popupWindow200");
+            var closeButton200 = document.getElementById("closeButton200");
+
+            popupWindow200.style.display = "block"; // display the window
+
+            // redirect to dashboard
+            closeButton200.addEventListener("click", function () {
+                window.location.replace("/corsica-frontend/dashboard");
             });
         }
 
@@ -300,6 +323,7 @@
                 // error occured and login didn't work
                 if (!loginResponse.ok) {
                     if (loginResponse.status == 400) { // wrong creds
+                        console.log(loginResponse.status);
                         loginFailure(); //popup window
                     }
                     else if (loginResponse.status == 403) { // wrong perms
@@ -314,7 +338,9 @@
                     localStorage.setItem("uid", uid);
                     localStorage.setItem("password", password);
 
-                    window.location.replace("/corsica-frontend/dashboard");
+                    if (loginResponse.status == 200) { // correct creds
+                        loginSuccess(); //popup window
+                    }
                 }
 
                 const loginData = await loginResponse.json();
