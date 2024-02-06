@@ -19,6 +19,24 @@
             left: 50%;
         }
 
+        .error {
+            background: rgba(58, 58, 60, 0.3);
+            padding: 3em;
+            height: auto;
+            border-radius: 20px;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+            }
+        }
+
         form {
             background: rgba(58, 58, 60, 0.3);
             padding: 3em;
@@ -213,7 +231,6 @@
     <div class="container" id="popupWindow200" style="display: none;">
         <div class="error">
             <p><strong>Account Created</strong></p>
-            <p>Account created successfully!</p>
             <input id="closeButton200" type="submit" value="Go to Dashboard">
         </div>
     </div>
@@ -267,6 +284,10 @@
                 }
 
                 const loginData = await loginResponse.json();
+                console.log(loginData);
+                if (loginData) {
+                    sucess();
+                }
 
                 if (loginData.success) {
                     // Login was successful, you can redirect or perform any other action
@@ -278,7 +299,6 @@
                     window.location.href = "./chat.html"
                     window.location.replace("./chat.html")
 
-                    sucess();
                 } else {
                     // Login failed, show an error message or take appropriate action
                     console.error('Login failed:', loginData.message);
