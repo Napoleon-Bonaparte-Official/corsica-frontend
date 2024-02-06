@@ -311,6 +311,7 @@
                 const formData = new FormData(form);
                 console.log(form)
 
+                
                 // Send a POST request to your backend server
                 const loginResponse = await fetch(apiUrl, {
                     method: 'POST',
@@ -325,6 +326,8 @@
                     if (loginResponse.status == 400) { // wrong creds
                         console.log(loginResponse.status);
                         loginFailure(); //popup window
+                        window.location.href = "./401.html"
+                        window.location.replace("./401.html")
                     }
                     else if (loginResponse.status == 403) { // wrong perms
                         console.log(loginResponse.status);

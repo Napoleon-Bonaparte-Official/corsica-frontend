@@ -258,7 +258,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ name, uid, password, dob, email }) // convert payload to JSON
-                });
+                })
 
                 // error occured and login didn't work
                 if (!loginResponse.ok) {

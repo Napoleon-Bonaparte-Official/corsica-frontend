@@ -271,10 +271,13 @@
                         body: JSON.stringify({ uid }) //JSON data
                     });
 
-                    console.log("account deleted :(");
 
                     // wait for response and log whatever it says
                     const responseData = await deleteAccount.json();
+                    if (responseData == null){
+                        window.location.href = "./403.html"
+                        window.location.replace("./403.html")
+                    }
                     console.log(responseData);
                 } catch (error) {
                     console.error('Error:', error);
@@ -291,8 +294,8 @@
             changeEmail.addEventListener('click', async function (event) {
                 event.preventDefault();
                 try {
-                    const apiUrl = "http://127.0.0.1:8086/api/users/authenticate"
-                    const newEmail = document.getElementById('emailField').value; // the new email to change 
+                    const apiUrl = "http://127.0.0.1:8086/api/users/update"
+                    const email = document.getElementById('emailField').value; // the new email to change 
 
                     // post request to backend
                     const changeEmail = await fetch(apiUrl, {
@@ -300,11 +303,12 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ uid, newEmail }) //JSON data
+                        body: JSON.stringify({ uid, email }) //JSON data
                     });
-
-                    console.log("email changed");
-
+                    if (changeEmail.status===400){
+                        window.location.href = "./403.html"
+                        window.location.replace("./403.html")
+                    }
 
                     // wait for response and log whatever it says
                     const responseData = await changeEmail.json();
