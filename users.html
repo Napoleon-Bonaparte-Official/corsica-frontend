@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Data Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <table id="data-table">
+        <!-- Table content will be dynamically added here -->
+    </table>
+
+    <script>
+        // Function to send a GET request to the URL
+        function fetchData(url) {
+            return fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Call function to format data into a table
+                    formatDataIntoTable(data);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Function to format JSON data into a table
+        function formatDataIntoTable(data) {
+            const table = document.getElementById('data-table');
+            // Create table headers
+            const headers = Object.keys(data);
+            const headerRow = table.insertRow();
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+        
+            // Create table rows
+            const row = table.insertRow();
+            headers.forEach(headerText => {
+                const cell = row.insertCell();
+                let cellContent = data[headerText];
+                // If the value is an array (e.g., posts), format it accordingly
+                if (Array.isArray(cellContent)) {
+                    cellContent = cellContent.map(post => {
+                        if (typeof post === 'string' && post.startsWith('data:image')) {
+                            return `<img src="${post}" />`;
+                        } else {
+                            return JSON.stringify(post);
+                        }
+                    }).join('<br>');
+                }
+                cell.innerHTML = cellContent;
+            });
+        }
+
+        // URL to fetch JSON data from
+        const apiUrl = 'http://127.0.0.1:8086/api/users';
+
+        // Call fetchData function with the API URL
+        fetchData(apiUrl);
+
+    </script>
+</body>
+</html>
