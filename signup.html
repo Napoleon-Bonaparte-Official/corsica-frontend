@@ -286,23 +286,15 @@
                 const loginData = await loginResponse.json();
                 console.log(loginData);
                 if (loginData) {
-                    localStorage.setItem("uid", username.uid);
+                    localStorage.setItem("uid", loginData.uid);
                     sucess();
-                }
 
-                if (loginData.success) {
-                    // Login was successful, you can redirect or perform any other action
-                    console.log('Login successful:', loginData.message);
-
-                    localStorage.setItem("usernameData", username.value);
+                    localStorage.setItem("usernameData", uid);
                     localStorage.setItem("flagData", 1);
-
-                    window.location.href = "./chat.html"
-                    window.location.replace("./chat.html")
-
-                } else {
+                }
+                else {
                     // Login failed, show an error message or take appropriate action
-                    console.error('Login failed:', loginData.message);
+                    console.error("login failed");
                 }
             } catch (error) {
                 console.error('Error:', error);
