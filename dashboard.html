@@ -20,6 +20,24 @@
             left: 50%;
         }
 
+        .error {
+            background: rgba(58, 58, 60, 0.3);
+            padding: 3em;
+            height: auto;
+            border-radius: 20px;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+            }
+        }
+
         form {
             background: rgba(58, 58, 60, 0.3);
             padding: 3em;
@@ -95,7 +113,7 @@
 
             &[type="button"] {
                 margin-top: 10px;
-                width: 150px;
+                /* width: 150px; */
                 font-size: 1rem;
 
                 &:hover {
@@ -204,7 +222,30 @@
         </div>
     </div>
 
+    <!-- forbidden error (403) -->
+    <div class="container" id="popupWindow403" style="display: none;">
+        <div class="error">
+            <p><strong>Wrong Permissions</strong></p>
+            <p>You don't have permission to do that. Maybe try logging in?</p>
+            <input id="closeButton403" type="submit" value="Close">
+        </div>
+    </div>
+
     <script>
+        // 403 error
+        function permissionFailure() {
+            // the login form elements
+            var popupwindow403 = document.getElementById("popupWindow403");
+            var closeButton403 = document.getElementById("closeButton403");
+
+            popupWindow403.style.display = "block"; // display the window
+
+            // close the window if you click close
+            closeButton403.addEventListener("click", function () {
+                popupWindow403.style.display = "none";
+            });
+        }
+
         // const loggedIn = localStorage.getItem("loggedIn"); //logged in?
         const uid = localStorage.getItem("uid"); //who just logged in?
         const password = localStorage.getItem("password");
@@ -238,6 +279,12 @@
                 } catch (error) {
                     console.error('Error:', error);
                 }
+
+                // user tries to delete account but not logged in
+                if (deleteAccount.status == 403) {
+                    console.log(loginResponse.status);
+                    permissionFailure(); //popup window
+                }
             });
 
             // listen for email change button clicked
@@ -264,6 +311,12 @@
                     console.log(responseData);
                 } catch (error) {
                     console.error('Error:', error);
+                }
+
+                // user tries to change email but not logged in
+                if (deleteAccount.status == 403) {
+                    console.log(loginResponse.status);
+                    permissionFailure(); //popup window
                 }
             });
         });

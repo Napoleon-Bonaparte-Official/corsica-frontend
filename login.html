@@ -282,7 +282,7 @@
             });
         }
 
-        // // 200 success
+        // 200 success
         function loginSuccess() {
             // the login form elements
             var popupwindow200 = document.getElementById("popupWindow200");
@@ -327,6 +327,7 @@
                         loginFailure(); //popup window
                     }
                     else if (loginResponse.status == 403) { // wrong perms
+                        console.log(loginResponse.status);
                         permissionFailure(); //popup window
                     }
 
@@ -339,6 +340,7 @@
                     localStorage.setItem("password", password);
 
                     if (loginResponse.status == 200) { // correct creds
+                        console.log(loginResponse.status);
                         loginSuccess(); //popup window
                     }
                 }
