@@ -254,6 +254,7 @@
                 // Send a POST request to your backend server
                 const loginResponse = await fetch(apiUrl, {
                     method: 'POST',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json'
                     },

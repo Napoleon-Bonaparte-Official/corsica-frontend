@@ -314,8 +314,11 @@
                 
                 // Send a POST request to your backend server
                 const loginResponse = await fetch(apiUrl, {
+                    mode: 'cors',
+                    credentials: 'include',
                     method: 'POST',
                     headers: {
+                        'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ uid, password }) // convert payload to JSON
@@ -338,34 +341,33 @@
                 }
                 // login worked
                 else {
-                    localStorage.setItem("loggedIn", 1);
-                    localStorage.setItem("uid", uid);
-                    localStorage.setItem("password", password);
+                    // Extract the token from cookies
+                    const cookies = document.cookie.split(';');
+                    let token = null;
+                    cookies.forEach(cookie => {
+                        const parts = cookie.split('=');
+                        const name = parts.shift().trim();
+                        if (name === 'jwt') { 
+                            token = parts.join('=');
+                        }
+                    });
+                
+                    if (!token) {
+                        throw new Error('Token not found in cookies');
+                    }
+                
+                    // Store the token in localStorage for easier access
+                    localStorage.setItem("token", token);
 
-                    if (loginResponse.status == 200) { // correct creds
-                        console.log(loginResponse.status);
-                        loginSuccess(); //popup window
+                    // Optionally, you can also store other data if needed
+                    localStorage.setItem("uid", uid);
+                    localStorage.setItem("loggedIn", true);
+                
+                    console.log('Login successful');
+                    loginSuccess(); //popup window
                     }
                 }
-
-                const loginData = await loginResponse.json();
-
-                if (loginData.success) {
-                    // Login was successful, you can redirect or perform any other action
-                    console.log('Login successful:', loginData.message);
-
-                    localStorage.setItem("username", username.value);
-                    localStorage.setItem("flagData", 1);
-
-                    window.location.href = "./chat.html"
-                    window.location.replace("./chat.html")
-
-
-                } else {
-                    // Login failed, show an error message or take appropriate action
-                    console.error('Login failed:', loginData.message);
-                }
-            } catch (error) {
+            catch (error) {
                 console.error('Error:', error);
             }
         }

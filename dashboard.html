@@ -265,6 +265,7 @@
                     // post request to backend
                     const deleteAccount = await fetch(apiUrl, {
                         method: 'DELETE',
+                        credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json'
                         },
@@ -300,6 +301,7 @@
                     // post request to backend
                     const changeEmail = await fetch(apiUrl, {
                         method: 'POST',
+                        credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json'
                         },
