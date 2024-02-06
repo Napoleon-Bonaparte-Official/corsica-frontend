@@ -340,22 +340,6 @@
                 // login worked
                 else {
                     // Extract the token from cookies
-                    const cookies = document.cookie.split(';');
-                    let token = null;
-                    cookies.forEach(cookie => {
-                        const parts = cookie.split('=');
-                        const name = parts.shift().trim();
-                        if (name === 'jwt') { 
-                            token = parts.join('=');
-                        }
-                    });
-                
-                    if (!token) {
-                        throw new Error('Token not found in cookies');
-                    }
-                
-                    // Store the token in localStorage for easier access
-                    localStorage.setItem("token", token);
 
                     // Optionally, you can also store other data if needed
                     localStorage.setItem("uid", uid);
