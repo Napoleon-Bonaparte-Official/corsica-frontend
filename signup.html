@@ -286,6 +286,7 @@
                 const loginData = await loginResponse.json();
                 console.log(loginData);
                 if (loginData) {
+                    localStorage.setItem("uid", username.uid);
                     sucess();
                 }
 

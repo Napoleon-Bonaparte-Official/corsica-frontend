@@ -229,7 +229,8 @@
     <!-- login error (400) -->
     <div class="container" id="popupWindow400" style="display: none;">
         <div class="error">
-            <p><strong>Login Failed</strong></p>
+            <p><strong>400</strong></p>
+            <p>Login Failed - Incorrect Credentials</p>
             <input id="closeButton400" type="submit" value="Close">
         </div>
     </div>
@@ -237,8 +238,8 @@
     <!-- forbidden error (403) -->
     <div class="container" id="popupWindow403" style="display: none;">
         <div class="error">
-            <p><strong>Wrong Permissions</strong></p>
-            <p>You don't have permission to do that.</p>
+            <p><strong>403</strong></p>
+            <p>Wrong Permissions - You don't have permission to do that.</p>
             <input id="closeButton403" type="submit" value="Close">
         </div>
     </div>
@@ -326,9 +327,13 @@
                 if (!loginResponse.ok) {
                     if (loginResponse.status == 400) { // wrong creds
                         console.log(loginResponse.status);
+
+                        // below is the POPUP version of the error
                         loginFailure(); //popup window
-                        window.location.href = "./401.html"
-                        window.location.replace("./401.html")
+
+                        // below is the FULL PAGE version of the error
+                        // window.location.href = "./401.html"
+                        // window.location.replace("./401.html")
                     }
                     else if (loginResponse.status == 403) { // wrong perms
                         console.log(loginResponse.status);

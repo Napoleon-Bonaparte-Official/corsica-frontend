@@ -225,8 +225,8 @@
     <!-- forbidden error (403) -->
     <div class="container" id="popupWindow403" style="display: none;">
         <div class="error">
-            <p><strong>Wrong Permissions</strong></p>
-            <p>You don't have permission to do that. Maybe try logging in?</p>
+            <p><strong>403</strong></p>
+            <p>You don't have permission to do that.</p>
             <input id="closeButton403" type="submit" value="Close">
         </div>
     </div>
@@ -275,9 +275,13 @@
 
                     // wait for response and log whatever it says
                     const responseData = await deleteAccount.json();
-                    if (responseData == null){
-                        window.location.href = "./403.html"
-                        window.location.replace("./403.html")
+                    if (responseData == null) {
+                        // POPUP version
+                        permissionFailure(); //popup window
+
+                        // NEW PAGE version
+                        // window.location.href = "./403.html"
+                        // window.location.replace("./403.html")
                     }
                     console.log(responseData);
                 } catch (error) {
@@ -285,10 +289,10 @@
                 }
 
                 // user tries to delete account but not logged in
-                if (deleteAccount.status == 403) {
-                    console.log(loginResponse.status);
-                    permissionFailure(); //popup window
-                }
+                // if (deleteAccount.status == 403) {
+                //     console.log(loginResponse.status);
+                //     permissionFailure(); //popup window
+                // }
             });
 
             // listen for email change button clicked
@@ -307,7 +311,7 @@
                         },
                         body: JSON.stringify({ uid, email }) //JSON data
                     });
-                    if (changeEmail.status===400){
+                    if (changeEmail.status === 400) {
                         window.location.href = "./403.html"
                         window.location.replace("./403.html")
                     }
