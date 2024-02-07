@@ -17,6 +17,115 @@
             width: 100%;
         }
 
+        .container {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+        }
+
+        .error {
+            background: rgba(58, 58, 60, 0.3);
+            padding: 3em;
+            height: auto;
+            border-radius: 20px;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        form {
+            background: rgba(58, 58, 60, 0.3);
+            padding: 3em;
+            height: auto;
+            border-radius: 20px;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            transition: all 0.2s ease-in-out;
+        }
+
+        p {
+            font-weight: 500;
+            color: #fff;
+            opacity: 0.7;
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 60px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        a {
+            text-decoration: none;
+            color: #ddd;
+            font-size: 12px;
+
+            &:hover {
+                text-shadow: 2px 2px 6px #00000040;
+            }
+
+            &:active {
+                text-shadow: none;
+            }
+        }
+
+        input {
+            background: transparent;
+            width: 200px;
+            padding: 1em;
+            margin-bottom: 2em;
+            border: none;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            border-radius: 5000px;
+            backdrop-filter: blur(5px);
+            box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+            color: #fff;
+            font-family: Montserrat, sans-serif;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+                box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            &[type="email"],
+            &[type="password"] {
+
+                &:focus {
+                    background: rgba(255, 255, 255, 0.1);
+                    box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+                }
+            }
+
+            &[type="button"] {
+                margin-top: 10px;
+                /* width: 150px; */
+                font-size: 1rem;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &:active {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+            }
+        }
+
         /* table contents */
         th,
         td {
@@ -44,8 +153,87 @@
 
 <body>
     <table id="data-table">
+        <!-- data is generated on its own -->
     </table>
+
+    <div class="container">
+        <form method="POST" id="myForm">
+            <!-- changing email -->
+            <p>Change Email</p>
+            <!-- the uid you input to change an email -->
+            <input type="text" id="uidEmailField" name="uidEmail" placeholder="UID"><br>
+            <input type="text" id="emailField" name="email" placeholder="New Email"><br>
+            <input type="submit" id="changeEmail" value="Change Email">
+            <hr><br>
+
+            <!-- account deleton -->
+            <p>Account Deletion</p>
+            <!-- the uid you input to change an account -->
+            <input type="text" id="uidAccountField" name="uidAccount" placeholder="UID">
+            <input type="submit" id="deleteAccount" value="Delete Account">
+        </form>
+    </div>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // reference to the buttons
+            var deleteAccount = document.getElementById('deleteAccount');
+            var changeEmail = document.getElementById('changeEmail');
+
+            // reference to the uid's to use
+
+
+            // listen for delete button clicked
+            deleteAccount.addEventListener('click', async function (event) {
+                const uid = document.getElementById('uidAccountField').value;
+                event.preventDefault();
+                try {
+                    const apiUrl = "http://127.0.0.1:8086/api/users/update"
+
+                    // post request to backend
+                    const deleteAccount = await fetch(apiUrl, {
+                        method: 'DELETE',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ uid }) //JSON data
+                    });
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+
+            // listen for email change button clicked
+            changeEmail.addEventListener('click', async function (event) {
+                event.preventDefault();
+                try {
+                    const apiUrl = "http://127.0.0.1:8086/api/users/update"
+                    const email = document.getElementById('emailField').value; // the new email to change 
+                    const uid = document.getElementById('uidEmailField').value; // the uid to make the change
+
+                    // post request to backend
+                    const changeEmail = await fetch(apiUrl, {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ uid, email }) //JSON data
+                    });
+                    if (changeEmail.status === 400) {
+                        window.location.href = "./403.html"
+                        window.location.replace("./403.html")
+                    }
+
+                    // wait for response and log whatever it says
+                    const responseData = await changeEmail.json();
+                    console.log(responseData);
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
         // Function to send a GET request to the URL
         function fetchData(url) {
             return fetch(url, {
@@ -82,7 +270,7 @@
             table.innerHTML = '';
 
             // Create table headers
-            const headers = ['Name', 'UID', 'ID #', 'DOB', 'Role'];
+            const headers = ['Name', 'UID', 'ID #', 'Email', 'DOB', 'Role'];
             const headerRow = table.insertRow();
             headers.forEach(headerText => {
                 const th = document.createElement('th');
@@ -97,6 +285,7 @@
                 row.insertCell().textContent = userData.name;
                 row.insertCell().textContent = userData.uid;
                 row.insertCell().textContent = userData.id;
+                row.insertCell().textContent = userData.email;
                 row.insertCell().textContent = userData.dob;
                 row.insertCell().textContent = userData.role;
             });
