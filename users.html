@@ -19,7 +19,7 @@
 
         .container {
             position: absolute;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -25%);
             top: 50%;
             left: 50%;
         }
@@ -152,27 +152,32 @@
 </head>
 
 <body>
-    <table id="data-table">
-        <!-- data is generated on its own -->
-    </table>
+    <div>
+        <table id="data-table">
+            <!-- data is generated on its own -->
+        </table>
 
-    <div class="container">
-        <form method="POST" id="myForm">
-            <!-- changing email -->
-            <p>Change Email</p>
-            <!-- the uid you input to change an email -->
-            <input type="text" id="uidEmailField" name="uidEmail" placeholder="UID"><br>
-            <input type="text" id="emailField" name="email" placeholder="New Email"><br>
-            <input type="submit" id="changeEmail" value="Change Email">
-            <hr><br>
-
-            <!-- account deleton -->
-            <p>Account Deletion</p>
-            <!-- the uid you input to change an account -->
-            <input type="text" id="uidAccountField" name="uidAccount" placeholder="UID">
-            <input type="submit" id="deleteAccount" value="Delete Account">
-        </form>
+        <div class="container">
+            <form method="POST" id="myForm">
+                <!-- changing email -->
+                <p>Change Email</p>
+                <!-- the uid you input to change an email -->
+                <input type="text" id="uidEmailField" name="uidEmail" placeholder="UID"><br>
+                <input type="text" id="emailField" name="email" placeholder="New Email"><br>
+                <input type="submit" id="changeEmail" value="Change Email">
+                <hr><br>
+        
+                <!-- account deleton -->
+                <p>Account Deletion</p>
+                <!-- the uid you input to change an account -->
+                <input type="text" id="uidAccountField" name="uidAccount" placeholder="UID">
+                <input type="submit" id="deleteAccount" value="Delete Account">
+            </form>
+        </div>
     </div>
+    
+
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // reference to the buttons
@@ -185,6 +190,7 @@
             // listen for delete button clicked
             deleteAccount.addEventListener('click', async function (event) {
                 const uid = document.getElementById('uidAccountField').value;
+                console.log(uid);
                 event.preventDefault();
                 try {
                     const apiUrl = "http://127.0.0.1:8086/api/users/update"
@@ -245,7 +251,7 @@
                         window.location.href = '403.html'; // Redirect to 403 page
                         throw new Error('Forbidden'); // Throw an error to stop further execution
                     }
-                    else if (response.status == 401) {
+                    else if (response.status === 401) {
                         window.location.href = '401.html'; // Redirect to 403 page
                         throw new Error('Forbidden'); // Throw an error to stop further execution
                     }

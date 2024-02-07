@@ -226,12 +226,12 @@
         </div>
     </div>
 
-    <!-- login error (400) -->
-    <div class="container" id="popupWindow400" style="display: none;">
+    <!-- login error (401) -->
+    <div class="container" id="popupWindow401" style="display: none;">
         <div class="error">
-            <p><strong>400</strong></p>
+            <p><strong>401</strong></p>
             <p>Login Failed - Incorrect Credentials</p>
-            <input id="closeButton400" type="submit" value="Close">
+            <input id="closeButton401" type="submit" value="Close">
         </div>
     </div>
 
@@ -256,14 +256,14 @@
         // 400 error
         function loginFailure() {
             // the login form elements
-            var popupWindow400 = document.getElementById("popupWindow400");
-            var closeButton400 = document.getElementById("closeButton400");
+            var popupWindow401 = document.getElementById("popupWindow401");
+            var closeButton401 = document.getElementById("closeButton401");
 
-            popupWindow400.style.display = "block"; // display the window
+            popupWindow401.style.display = "block"; // display the window
 
             // close the window if you click close
-            closeButton400.addEventListener("click", function () {
-                popupWindow400.style.display = "none";
+            closeButton401.addEventListener("click", function () {
+                popupWindow401.style.display = "none";
             });
         }
 
@@ -291,7 +291,7 @@
 
             // redirect to dashboard
             closeButton200.addEventListener("click", function () {
-                window.location.replace("/corsica-frontend/dashboard");
+                window.location.replace("/corsica-frontend/users");
             });
         }
 
@@ -325,7 +325,7 @@
 
                 // error occured and login didn't work
                 if (!loginResponse.ok) {
-                    if (loginResponse.status == 400) { // wrong creds
+                    if (loginResponse.status === 401) { // wrong creds
                         console.log(loginResponse.status);
 
                         // below is the POPUP version of the error
@@ -335,7 +335,7 @@
                         // window.location.href = "./401.html"
                         // window.location.replace("./401.html")
                     }
-                    else if (loginResponse.status == 403) { // wrong perms
+                    else if (loginResponse.status === 403) { // wrong perms
                         console.log(loginResponse.status);
                         permissionFailure(); //popup window
                     }
