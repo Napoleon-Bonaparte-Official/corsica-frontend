@@ -1,171 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSON Data Table</title>
     <style>
+        body {
+            background: linear-gradient(45deg, #000000, #2c2c2e);
+            height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
         }
-        th, td {
-            border: 1px solid #ddd;
+
+        /* table contents */
+        th,
+        td {
             padding: 8px;
-            text-align: left;
+            color: white;
+
+            background: rgba(58, 58, 60, 0.3);
+            height: auto;
+
+            backdrop-filter: blur(10px);
+            text-align: center;
+            position: relative;
+            margin-right: 50px;
+
+            border-left: 10px solid rgba(0, 0, 0, 0.0);
+            border-right: 10px solid rgba(0, 0, 0, 0.0);
         }
-        th {
-            background-color: #f2f2f2;
-        }
+
         img {
             max-width: 100px;
             max-height: 100px;
         }
     </style>
 </head>
+
 <body>
     <table id="data-table">
     </table>
-    <h2>Delete Account</h2>
-    <label for="deleteUserId">User ID:</label>
-    <input type="text" id="deleteUserId" name="deleteUserId">
-    <button id = "delete" onclick="deleteAccount()">Delete Account</button>
-
-    <h2>Update Email</h2>
-    <label for="updateUserId">User ID:</label>
-    <input type="text" id="updateUserId" name="updateUserId">
-    <label for="newEmail">New Email:</label>
-    <input type="email" id="newEmail" name="newEmail">
-    <button id="update" onclick="updateEmail()">Update Email</button>
-<script> 
-    function deleteAccount(){
-        event.preventDefault();
-            try {
-                var uid = document.getElementById('deleteUserId').value;
-                const apiUrl = "http://127.0.0.1:8086/api/users/update"
-                // post request to backend
-                fetch(apiUrl, {
-                    method: 'DELETE',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ uid }) //JSON data
-                }).then(response => {
+    <script>
+        // Function to send a GET request to the URL
+        function fetchData(url) {
+            return fetch(url, {
+                mode: "cors",
+                credentials: 'include'
+            })
+                .then(response => {
                     if (response.status === 403) {
                         window.location.href = '403.html'; // Redirect to 403 page
                         throw new Error('Forbidden'); // Throw an error to stop further execution
-                    } 
-                    else if (response.status === 401) {
+                    }
+                    else if (response.status == 401) {
                         window.location.href = '401.html'; // Redirect to 403 page
                         throw new Error('Forbidden'); // Throw an error to stop further execution
                     }
                     else {
                         return response.json(); // Proceed with normal data processing
                     }
+                })
+                .then(data => {
+                    // Call function to format data into a table
+                    formatDataIntoTable(data);
+                })
+                .catch(error => {
+                    // Handle other errors
+                    console.error('Error fetching data:', error);
                 });
-            } catch (error) {
-                console.error('Error:', error);
-            }
-    }
+        }
 
-    // listen for email change button clicked
-    function updateEmail() {
-        event.preventDefault();
-        try {    
-            var uid = document.getElementById('updateUserId').value;
-            var email = document.getElementById('newEmail').value;
-            const apiUrl = "http://127.0.0.1:8086/api/users/update"
-            // post request to backend
-            fetch(apiUrl, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ uid, email }) //JSON data
+        // Function to format JSON data into a table
+        function formatDataIntoTable(data) {
+            const table = document.getElementById('data-table');
+            // Clear existing table content
+            table.innerHTML = '';
+
+            // Create table headers
+            const headers = ['Name', 'UID', 'ID #', 'DOB', 'Role'];
+            const headerRow = table.insertRow();
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
             });
-        } catch (error) {
-            console.error('Error:', error);
+
+            // Iterate over each user's data
+            data.forEach(userData => {
+                const row = table.insertRow();
+                // Insert data into cells
+                row.insertCell().textContent = userData.name;
+                row.insertCell().textContent = userData.uid;
+                row.insertCell().textContent = userData.id;
+                row.insertCell().textContent = userData.dob;
+                row.insertCell().textContent = userData.role;
+            });
         }
-    }
 
-// Function to send a GET request to the URL
-function fetchData(url) {
-    fetch(url, {
-        credentials: 'include'
-    })
-    
-    .then(response => {
-        if (response.status === 403) {
-            window.location.href = '403.html'; // Redirect to 403 page
-            throw new Error('Forbidden'); // Throw an error to stop further execution
-        } 
-        else if (response.status === 401) {
-            window.location.href = '401.html'; // Redirect to 403 page
-            throw new Error('Forbidden'); // Throw an error to stop further execution
-        }
-        else {
-            return response.json(); // Proceed with normal data processing
-        }
-    })
-    .then(data => {
-        // Call function to format data into a table
-        formatDataIntoTable(data);
-    })
-    .catch(error => {
-        // Handle other errors
-        console.error('Error fetching data:', error);
-    });
+        // URL to fetch JSON data from
+        const apiUrl = 'http://127.0.0.1:8086/api/users';
 
-}
-
-// Function to format JSON data into a table
-function formatDataIntoTable(data) {
-    const table = document.getElementById('data-table');
-    table.innerHTML = '';
-
-    // Create table headers
-    const headers = [
-        "uid", 
-        "name", 
-        "email", 
-        "role", 
-        "dob",
-    ];
-    
-    const headerRow = table.insertRow();
-    headers.forEach(headerText => {
-        const th = document.createElement('th');
-        th.textContent = headerText;
-        headerRow.appendChild(th);
-    });
-
-    // Create table rows for each user
-    data.forEach(user => {
-        const row = table.insertRow();
-        // Populate cells with user data
-        headers.forEach(headerText => {
-            if (true) {
-                const cell = row.insertCell();
-                let cellContent = user[headerText]; // Access the value using the headerText as the key
-                // If the value is an object, stringify it
-                if (typeof cellContent === 'object') {
-                    cellContent = JSON.stringify(cellContent);
-                }
-                cell.innerHTML = cellContent;
-            }
-        });
-    });
-}
-
-
-// URL to fetch JSON data from
-const apiUrl = 'http://127.0.0.1:8086/api/users';
-
-// Call fetchData function with the API URL
-fetchData(apiUrl);
-
+        // Call fetchData function with the API URL
+        fetchData(apiUrl);
     </script>
 </body>
+
 </html>
