@@ -25,15 +25,65 @@
 </head>
 <body>
     <table id="data-table">
-        <!-- Table content will be dynamically added here -->
     </table>
-<script>
+    <h2>Delete Account</h2>
+    <label for="deleteUserId">User ID:</label>
+    <input type="text" id="deleteUserId" name="deleteUserId">
+    <button id = "delete" onclick="deleteAccount()">Delete Account</button>
+
+    <h2>Update Email</h2>
+    <label for="updateUserId">User ID:</label>
+    <input type="text" id="updateUserId" name="updateUserId">
+    <label for="newEmail">New Email:</label>
+    <input type="email" id="newEmail" name="newEmail">
+    <button id="update" onclick="updateEmail()">Update Email</button>
+<script> 
+    function deleteAccount(){
+        event.preventDefault();
+            try {
+                var uid = document.getElementById('deleteUserId').value;
+                const apiUrl = "http://127.0.0.1:8086/api/users/update"
+                // post request to backend
+                fetch(apiUrl, {
+                    method: 'DELETE',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ uid }) //JSON data
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+    }
+
+    // listen for email change button clicked
+    function updateEmail() {
+        event.preventDefault();
+        try {    
+            var uid = document.getElementById('updateUserId').value;
+            var email = document.getElementById('newEmail').value;
+            const apiUrl = "http://127.0.0.1:8086/api/users/update"
+            // post request to backend
+            fetch(apiUrl, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ uid, email }) //JSON data
+            });
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
 // Function to send a GET request to the URL
 function fetchData(url) {
     return fetch(url, {
-        mode: "cors",
         credentials: 'include'
     })
+<<<<<<< Updated upstream
     .then(response => {
         if (response.status === 403) {
             window.location.href = '403.html'; // Redirect to 403 page
@@ -55,16 +105,31 @@ function fetchData(url) {
         // Handle other errors
         console.error('Error fetching data:', error);
     });
+=======
+        .then(response => response.json())
+        .then(data => {
+            // Call function to format data into a table
+            formatDataIntoTable(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+
+>>>>>>> Stashed changes
 }
 
 // Function to format JSON data into a table
 function formatDataIntoTable(data) {
     const table = document.getElementById('data-table');
-    // Clear existing table content
     table.innerHTML = '';
 
     // Create table headers
-    const headers = Object.keys(data);
+    const headers = [
+        "uid", 
+        "name", 
+        "email", 
+        "role", 
+        "dob",
+    ];
+    
     const headerRow = table.insertRow();
     headers.forEach(headerText => {
         const th = document.createElement('th');
@@ -72,25 +137,30 @@ function formatDataIntoTable(data) {
         headerRow.appendChild(th);
     });
 
-    // Create table row
-    const row = table.insertRow();
-    headers.forEach(headerText => {
-        const cell = row.insertCell();
-        let cellContent = data[headerText];
-        // If the value is an object, stringify it
-        if (typeof cellContent === 'object') {
-            cellContent = JSON.stringify(cellContent);
-        }
-        cell.innerHTML = cellContent;
+    // Create table rows for each user
+    data.forEach(user => {
+        const row = table.insertRow();
+        // Populate cells with user data
+        headers.forEach(headerText => {
+            if (true) {
+                const cell = row.insertCell();
+                let cellContent = user[headerText]; // Access the value using the headerText as the key
+                // If the value is an object, stringify it
+                if (typeof cellContent === 'object') {
+                    cellContent = JSON.stringify(cellContent);
+                }
+                cell.innerHTML = cellContent;
+            }
+        });
     });
 }
+
 
 // URL to fetch JSON data from
 const apiUrl = 'http://127.0.0.1:8086/api/users';
 
 // Call fetchData function with the API URL
 fetchData(apiUrl);
-
 
     </script>
 </body>
