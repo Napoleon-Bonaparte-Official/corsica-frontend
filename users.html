@@ -83,7 +83,6 @@ function fetchData(url) {
     return fetch(url, {
         credentials: 'include'
     })
-<<<<<<< Updated upstream
     .then(response => {
         if (response.status === 403) {
             window.location.href = '403.html'; // Redirect to 403 page
@@ -105,7 +104,6 @@ function fetchData(url) {
         // Handle other errors
         console.error('Error fetching data:', error);
     });
-=======
         .then(response => response.json())
         .then(data => {
             // Call function to format data into a table
@@ -113,7 +111,6 @@ function fetchData(url) {
         })
         .catch(error => console.error('Error fetching data:', error));
 
->>>>>>> Stashed changes
 }
 
 // Function to format JSON data into a table
