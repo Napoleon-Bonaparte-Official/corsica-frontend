@@ -31,6 +31,7 @@
 // Function to send a GET request to the URL
 function fetchData(url) {
     return fetch(url, {
+        mode: "cors",
         credentials: 'include'
     })
         .then(response => response.json())
