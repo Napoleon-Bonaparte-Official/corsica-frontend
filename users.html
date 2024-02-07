@@ -51,6 +51,18 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ uid }) //JSON data
+                }).then(response => {
+                    if (response.status === 403) {
+                        window.location.href = '403.html'; // Redirect to 403 page
+                        throw new Error('Forbidden'); // Throw an error to stop further execution
+                    } 
+                    else if (response.status === 401) {
+                        window.location.href = '401.html'; // Redirect to 403 page
+                        throw new Error('Forbidden'); // Throw an error to stop further execution
+                    }
+                    else {
+                        return response.json(); // Proceed with normal data processing
+                    }
                 });
             } catch (error) {
                 console.error('Error:', error);
@@ -80,15 +92,16 @@
 
 // Function to send a GET request to the URL
 function fetchData(url) {
-    return fetch(url, {
+    fetch(url, {
         credentials: 'include'
     })
+    
     .then(response => {
         if (response.status === 403) {
             window.location.href = '403.html'; // Redirect to 403 page
             throw new Error('Forbidden'); // Throw an error to stop further execution
         } 
-        else if (response.status == 401) {
+        else if (response.status === 401) {
             window.location.href = '401.html'; // Redirect to 403 page
             throw new Error('Forbidden'); // Throw an error to stop further execution
         }
