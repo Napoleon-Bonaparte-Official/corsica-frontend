@@ -34,12 +34,27 @@ function fetchData(url) {
         mode: "cors",
         credentials: 'include'
     })
-        .then(response => response.json())
-        .then(data => {
-            // Call function to format data into a table
-            formatDataIntoTable(data);
-        })
-        .catch(error => console.error('Error fetching data:', error));
+    .then(response => {
+        if (response.status === 403) {
+            window.location.href = '403.html'; // Redirect to 403 page
+            throw new Error('Forbidden'); // Throw an error to stop further execution
+        } 
+        else if (response.status == 401) {
+            window.location.href = '401.html'; // Redirect to 403 page
+            throw new Error('Forbidden'); // Throw an error to stop further execution
+        }
+        else {
+            return response.json(); // Proceed with normal data processing
+        }
+    })
+    .then(data => {
+        // Call function to format data into a table
+        formatDataIntoTable(data);
+    })
+    .catch(error => {
+        // Handle other errors
+        console.error('Error fetching data:', error);
+    });
 }
 
 // Function to format JSON data into a table
