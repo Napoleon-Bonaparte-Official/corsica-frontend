@@ -115,82 +115,84 @@
     <div class="grid">
         <!-- video player -->
         <div id="container" type="video">
-            <video width="75%" height="100%" controls>
+            <video id="video" width="75%" height="100%" controls>
                 <source src="test.mp4" type="video/mp4">
-                <source src="">
             </video>
         </div>
 
         <!-- recommended section and description -->
         <div id="container" type="description">Recommended Videos go here</div>
         <div id="container" type="recommended">
-            DESCRIPTION GOES HERE
-
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna
-            aliqua. Integer quis auctor elit sed vulputate mi sit. Pellentesque elit ullamcorper dignissim cras
-            tincidunt lobortis
-            feugiat. Nisl rhoncus mattis rhoncus urna neque viverra justo nec ultrices. Augue mauris augue neque gravida
-            in
-            fermentum. Eu consequat ac felis donec et odio pellentesque diam volutpat. Nec dui nunc mattis enim.
-            Pharetra et
-            ultrices neque ornare aenean euismod elementum. Feugiat in ante metus dictum at tempor commodo ullamcorper
-            a. Phasellus
-            faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis. At urna condimentum mattis
-            pellentesque id.
-
-            Sit amet venenatis urna cursus. Facilisis magna etiam tempor orci eu lobortis elementum. Sapien faucibus et
-            molestie ac
-            feugiat sed. Ac tortor dignissim convallis aenean et tortor. Elementum pulvinar etiam non quam. Commodo
-            ullamcorper a
-            lacus vestibulum. Eget est lorem ipsum dolor. Aliquet enim tortor at auctor urna nunc. Suspendisse potenti
-            nullam ac
-            tortor vitae purus faucibus ornare. Sem viverra aliquet eget sit. Morbi tristique senectus et netus et
-            malesuada fames.
-            Mauris nunc congue nisi vitae. Eget velit aliquet sagittis id consectetur purus. Dui accumsan sit amet nulla
-            facilisi
-            morbi. Tincidunt augue interdum velit euismod in. Erat pellentesque adipiscing commodo elit at imperdiet.
-            Aliquam
-            ultrices sagittis orci a scelerisque. Quam vulputate dignissim suspendisse in est ante.
-
-            Proin sed libero enim sed faucibus turpis in. Interdum consectetur libero id faucibus nisl tincidunt eget.
-            Orci eu
-            lobortis elementum nibh tellus molestie nunc non blandit. Nisi vitae suscipit tellus mauris a diam.
-            Fermentum posuere
-            urna nec tincidunt praesent semper. Pretium aenean pharetra magna ac placerat vestibulum lectus mauris
-            ultrices. Sed sed
-            risus pretium quam vulputate dignissim suspendisse. Pulvinar neque laoreet suspendisse interdum. Neque
-            ornare aenean
-            euismod elementum. Dui id ornare arcu odio ut sem nulla pharetra. Nulla posuere sollicitudin aliquam
-            ultrices sagittis.
-            Lobortis mattis aliquam faucibus purus in massa tempor nec feugiat. Nullam non nisi est sit amet. Commodo
-            ullamcorper a
-            lacus vestibulum sed arcu. Pellentesque eu tincidunt tortor aliquam nulla facilisi cras. Et malesuada fames
-            ac turpis
-            egestas.
-
-            Ultrices neque ornare aenean euismod elementum. Porta lorem mollis aliquam ut. A cras semper auctor neque
-            vitae. Nullam
-            ac tortor vitae purus. Eget egestas purus viverra accumsan in nisl nisi. Nascetur ridiculus mus mauris
-            vitae. Faucibus
-            interdum posuere lorem ipsum dolor sit amet consectetur. Ac auctor augue mauris augue neque. Interdum velit
-            laoreet id
-            donec. Imperdiet dui accumsan sit amet nulla facilisi morbi tempus.
-
-            Arcu risus quis varius quam quisque id diam vel. Senectus et netus et malesuada fames ac turpis egestas
-            maecenas. Tortor
-            posuere ac ut consequat semper viverra nam libero justo. Vulputate sapien nec sagittis aliquam malesuada. In
-            fermentum
-            posuere urna nec tincidunt praesent semper feugiat. At erat pellentesque adipiscing commodo elit. Ipsum
-            dolor sit amet
-            consectetur adipiscing elit pellentesque. Vitae tortor condimentum lacinia quis vel eros donec. Id ornare
-            arcu odio ut
-            sem nulla pharetra. Duis convallis convallis tellus id.
-
+            <div id="title">TITLE</div>
+            <div id="description">DESCRIPTION</div>
+            <div id="creator">CREATOR</div>
+            <div id="views">VIEWS</div>
+            <button id="follow">{the uid}</button>
+            <!-- <button id="like">Like</button>
+            <button id="dislike">Dislike</button> -->
         </div>
     </div>
+    <script>
+        // Function to send a GET request to the URL
+        function fetchVideo(url) {
+            return fetch(url, {
+                mode: "cors",
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (response.status === 403) {
+                        window.location.href = '403.html'; // Redirect to 403 page
+                        throw new Error('Forbidden'); // Throw an error to stop further execution
+                    }
+                    else if (response.status === 401) {
+                        window.location.href = '401.html'; // Redirect to 403 page
+                        throw new Error('Forbidden'); // Throw an error to stop further execution
+                    }
+                    else {
+                        return response.json(); // Proceed with normal data processing
+                    }
+                })
+                .then(data => {
+                    // Call function to format data into a table
+                    formatVideo(data);
+                })
+                .catch(error => {
+                    // Handle other errors
+                    console.error('Error fetching data:', error);
+                });
+        }
 
+        // Function to format JSON data into a table
+        function formatVideo(data) {
+            const table = document.getElementById('data-table');
+            // Clear existing table content
+            var title = document.getElementById('title');
+            var description = document.getElementById('description');
+            var creator = document.getElementById('creator')
+            var follow = document.getElementById('follow');
+            //var like = document.getElementById('like');
+            //var dislike = document.getElementById('dislike');
+            var video = document.getElementById('video')
+            var views = document.getElementById("views");
+            
+            title.innerText = data.title;
+            description.innerText = data.description;
+            creator.innerText = data.uid;
+            views.innerText = data.views;
+            video.innerHTML = data.video;
+        }
 
+        // URL to fetch JSON data from
+        const apiUrl = 'http://127.0.0.1:8086/api/videos';
+        formatVideo({
+            "title": "titl",
+            "description": "desc",
+            "uid": "create",
+            "views": "views",
+            "video": "vid"
+    })
+        // Call fetchData function with the API URL
+        fetchVideo(apiUrl);
+    </script>
 </body>
-
 </html>
