@@ -133,7 +133,7 @@
     <!-- <footer>    </footer> -->
     <div class="grid">
         <!-- video player -->
-        <div id="container" height="100%" type="video">
+        <div id="containerVid" height="100%" type="video">
             <video id="video" width="75%" height="100%" controls>
                 <source src="" type="video/mp4">
             </video>
@@ -156,8 +156,12 @@
     </div>
     <script>
         // Function to send a GET request to the URL
-        function fetchVideo(url) {
-            return fetch(url, {
+        function fetchVideo(url, objectId) {
+            const params = new URLSearchParams(window.location.search);
+            const apiUrl = new URL(url) + params.get("videoID");
+            console.log()
+            var index = -1;
+            return fetch(apiUrl, {
                 mode: "cors",
                 credentials: 'include'
             })
@@ -176,18 +180,18 @@
                 })
                 .then(data => {
                     // Call function to format data into a table
-                    formatVideo(data);
+                    formatVideo(data, index);
                 })
                 .catch(error => {
                     // Handle other errors
                     console.error('Error fetching data:', error);
                 });
-        }
+        }        
 
         // Function to format JSON data into a table
-        function formatVideo(data) {
+        function formatVideo(data, index) {
             
-            console.log(data[0])
+            console.log(data)
             // Clear existing table content
             var title = document.getElementById('title');
             var description = document.getElementById('description');
@@ -198,13 +202,14 @@
             var video = document.getElementById('video')
             var views = document.getElementById("views");
             var source = video.querySelector('source');
+            
 
-            videoID = data[0]['videoID'];
-            title.innerText = data[0]["name"];
-            description.innerText = data[0]["description"];
-            creator.innerText = data[0]["userID"];
-            views.innerText = data[0]["views"] + " views";
-            source.src=data[0]["video"];
+            videoID = data['videoID'];
+            title.innerText = data["name"];
+            description.innerText = data["description"];
+            creator.innerText = data["userID"];
+            views.innerText = data["views"] + " views";
+            source.src=data["video"];
             video.load();
             try {
                 const url = "http://127.0.0.1:8069/api/videos/"
@@ -229,9 +234,9 @@
         //    "video": "vid"
         //})
         // Call fetchData function with the API URL
-        const apiUrl = 'http://127.0.0.1:8069/api/videos';
-
-        fetchVideo(apiUrl);
+        const apiUrl = 'http://127.0.0.1:8069/api/videos/';
+        const objectId = '1'; // Replace 'your_object_id_here' with the actual object ID
+        fetchVideo(apiUrl, objectId);
     </script>
 </body>
 

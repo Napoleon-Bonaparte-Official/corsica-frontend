@@ -115,6 +115,8 @@
             padding: 20px;
             height: 30vh;
         }
+
+
     </style>
 </head>
 
@@ -130,12 +132,12 @@
     </header>
 
     <!-- navigation chips -->
-    <nav>
+    <!-- <nav>
         <a href="/corsica-frontend/category/gaming">Gaming</a>
         <a href="/corsica-frontend/category/sports">Sports</a>
         <a href="/corsica-frontend/category/music">Music</a>
         <a href="/corsica-frontend/category/educational">Educational</a>
-    </nav>
+    </nav> -->
 
     <hr>
 
@@ -160,8 +162,9 @@
                 videoItem.classList.add('video-item');
 
                 const videoLink = document.createElement('a');
-                videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video?videoID=" + video.videoID; // Assuming video object has a 'video' property for the URL
-                videoLink.textContent = video.name; // Assuming video object has a 'name' property for the title
+                videoLink.href = video.video+"?v="+video["videoID"]; // Assuming video object has a 'video' property for the URL
+                videoLink.textContent = video.name; // Assuming video object has a 'name' property for the title--- the title
+                console.log(videoLink.href);
 
                 // const videoImage = document.createElement('img');
                 // videoImage.src = `data:image/png;base64,${video.base64}`; // Assuming 'base64' contains the base64 encoded thumbnail
@@ -169,7 +172,7 @@
 
                 const videoImage = document.createElement('img');
                 videoImage.classList.add('video');
-                console.log(video.base64);
+                //console.log(video.base64);
                 var encode = `${video.base64}`;
                 var step1 = encode.replace(/\\n/g, '');
                 // Remove Invalid string b'
@@ -178,7 +181,7 @@
                 var base64String = step2.replace(/[-:'\\]/g, '');
                 videoImage.src = `data:image/png;base64,${base64String}`;
                 videoImage.classList.add('video')
-                console.log(base64String);
+                //console.log(base64String);
 
                 const viewCount = document.createElement('span');
                 viewCount.textContent = `Views: ${video.views}`; // Assuming video object has a 'views' property
