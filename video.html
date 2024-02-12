@@ -96,6 +96,34 @@
             grid-row-gap: 10px;
             padding: 20px;
         }
+
+        .video-item {
+            height: 300px;
+            cursor: pointer;
+
+            border-radius: 20px;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        .video {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .grid-item {
+            padding: 25px;
+            height: 30vh;
+            margin-bottom: 10px;    
+        }
     </style>
 </head>
 
@@ -115,7 +143,10 @@
         </div>
 
         <!-- recommended section and description -->
-        <div id="container" type="description">Recommended Videos go here</div>
+
+
+        <!-- i flipped the description and recommended section names but i can't be asked to change it -->
+        <div id="container" type="description" class="videoGrid"></div>
         <div id="container" type="recommended">
             <div id="title">TITLE</div>
             <div id="creator">CREATOR</div>
@@ -212,6 +243,66 @@
         const apiUrl = 'http://127.0.0.1:8069/api/videos/';
         const objectId = '1'; // Replace 'your_object_id_here' with the actual object ID
         fetchVideo(apiUrl, objectId);
+
+        // thumbnail link thing
+            function renderVideos(videos) {
+                const videoGrid = document.querySelector('.videoGrid');
+
+                videos.forEach(video => {
+                    const videoItem = document.createElement('div');
+                    videoItem.classList.add('grid-item');
+                    videoItem.classList.add('video-item');
+
+                    const videoLink = document.createElement('a');
+                    videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video" + "?videoID=" + video["videoID"]; // Assuming video object has a 'video' property for the URL
+
+                    const videoImage = document.createElement('img');
+                    videoImage.classList.add('video');
+                    var encode = `${video.base64}`;
+                    var step1 = encode.replace(/\\n/g, '');
+                    var step2 = step1.replace(/b'/g, '');
+                    var base64String = step2.replace(/[-:'\\]/g, '');
+                    videoImage.src = `data:image/png;base64,${base64String}`;
+
+                    const title = document.createElement('span');
+                    title.textContent = video.name; // Assuming video object has a 'name' property for the title
+
+                    const viewCount = document.createElement('span');
+                    viewCount.textContent = `Views: ${video.views}`; // Assuming video object has a 'views' property
+                    viewCount.classList.add('view-count'); // Add a class for styling
+
+                    const lineBreak = document.createElement('br');
+
+                    // Append the videoLink to the videoItem
+                    videoItem.appendChild(videoLink);
+
+                    // Append the videoImage inside the videoLink
+                    videoLink.appendChild(videoImage);
+
+                    // Append the title, view count, and line break to the videoItem
+                    videoItem.appendChild(title);
+                    videoItem.appendChild(lineBreak);
+                    // videoItem.appendChild(viewCount);
+
+                    // Append the videoItem to the videoGrid
+                    videoGrid.appendChild(videoItem);
+                });
+            }
+
+
+
+
+            // Load videos when the page is loaded
+            document.addEventListener('DOMContentLoaded', async () => {
+                try {
+                    const apiUrl = "http://127.0.0.1:8069/api/videos"
+                    const response = await fetch(apiUrl);
+                    const videos = await response.json();
+                    renderVideos(videos);
+                } catch (error) {
+                    console.error('Error loading videos:', error);
+                }
+            });
     </script>
 </body>
 
