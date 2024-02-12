@@ -193,7 +193,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(views) //JSON data
+                    body: JSON.stringify({videoID: videoID}) //JSON data
                 })
             }catch (error) {
                 console.error('Error:', error);
