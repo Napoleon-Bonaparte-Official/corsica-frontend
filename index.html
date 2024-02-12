@@ -82,7 +82,7 @@
             }
         }
 
-        #video {
+        .video-item {
             height: 300px;
             cursor: pointer;
 
@@ -110,7 +110,7 @@
             grid-template-columns: repeat(3, 1fr);
             padding: 50px;
         }
-        
+
         .grid-item {
             padding: 20px;
             height: 30vh;
@@ -157,6 +157,7 @@
             videos.forEach(video => {
                 const videoItem = document.createElement('div');
                 videoItem.classList.add('grid-item');
+                videoItem.classList.add('video-item');
 
                 const videoLink = document.createElement('a');
                 videoLink.href = video.video; // Assuming video object has a 'video' property for the URL
@@ -167,6 +168,7 @@
                 // videoImage.classList.add('video');
 
                 const videoImage = document.createElement('img');
+                videoImage.classList.add('video');
                 console.log(video.base64);
                 var encode = `${video.base64}`;
                 var step1 = encode.replace(/\\n/g, '');
