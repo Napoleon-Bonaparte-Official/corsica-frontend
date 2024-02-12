@@ -162,7 +162,7 @@
                 videoItem.classList.add('video-item');
 
                 const videoLink = document.createElement('a');
-                videoLink.href = video.video+"?v="+video["videoID"]; // Assuming video object has a 'video' property for the URL
+                videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video"+"?videoID="+video["videoID"]; // Assuming video object has a 'video' property for the URL
                 videoLink.textContent = video.name; // Assuming video object has a 'name' property for the title--- the title
                 console.log(videoLink.href);
 
