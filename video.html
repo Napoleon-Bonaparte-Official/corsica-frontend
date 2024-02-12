@@ -9,6 +9,19 @@
             font-family: 'Montserrat', sans-serif;
         }
 
+        #title{
+            font-size: 24px;
+            font-weight: bold;
+            color: #F1F1F1;
+            margin-bottom: 10px;
+        }
+
+        #description{
+            font-size: 16px;
+            color: #F1F1F1;
+            line-height: 1.6;
+        }
+
         header {
             color: white;
             padding: 10px;
@@ -94,6 +107,12 @@
             }
         }
 
+        #desc-box{
+            margin: auto;
+            width:95%;
+            height:100%;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: 75% auto;
@@ -116,7 +135,7 @@
         <!-- video player -->
         <div id="container" type="video">
             <video id="video" width="75%" height="100%" controls>
-                <source src="test.mp4" type="video/mp4">
+                <source src="" type="video/mp4">
             </video>
         </div>
 
@@ -124,9 +143,12 @@
         <div id="container" type="description">Recommended Videos go here</div>
         <div id="container" type="recommended">
             <div id="title">TITLE</div>
-            <div id="description">DESCRIPTION</div>
             <div id="creator">CREATOR</div>
             <div id="views">VIEWS</div>
+            <div id="desc-box">
+                <div id="description">DESCRIPTION</div>
+            </div>
+            
             <!-- <button id="follow">{the uid}</button> -->
             <!-- <button id="like">Like</button>
             <button id="dislike">Dislike</button> -->
@@ -164,7 +186,8 @@
 
         // Function to format JSON data into a table
         function formatVideo(data) {
-            const table = document.getElementById('data-table');
+            
+            console.log(data[0])
             // Clear existing table content
             var title = document.getElementById('title');
             var description = document.getElementById('description');
@@ -174,24 +197,40 @@
             //var dislike = document.getElementById('dislike');
             var video = document.getElementById('video')
             var views = document.getElementById("views");
+            var source = video.querySelector('source');
 
-            title.innerText = data.title;
-            description.innerText = data.description;
-            creator.innerText = data.uid;
-            views.innerText = data.views;
-            video.innerHTML = data.video;
+            videoID = data[0]['videoID'];
+            title.innerText = data[0]["name"];
+            description.innerText = data[0]["description"];
+            creator.innerText = data[0]["userID"];
+            views.innerText = data[0]["views"] + " views";
+            source.src=data[0]["video"];
+            video.load();
+            try {
+                const url = "http://127.0.0.1:8069/api/videos/"
+                fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(videoID) //JSON data
+                })
+            }catch (error) {
+                console.error('Error:', error);
+            }
         }
 
         // URL to fetch JSON data from
-        const apiUrl = 'http://127.0.0.1:8086/api/videos';
-        formatVideo({
-            "title": "titl",
-            "description": "desc",
-            "uid": "create",
-            "views": "views",
-            "video": "vid"
-        })
+        //formatVideo({
+        //    "title": "title",
+        //    "description": "desc",
+        //    "uid": "create",
+        //    "views": "views",
+        //    "video": "vid"
+        //})
         // Call fetchData function with the API URL
+        const apiUrl = 'http://127.0.0.1:8069/api/videos';
+
         fetchVideo(apiUrl);
     </script>
 </body>
