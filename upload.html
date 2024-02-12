@@ -274,6 +274,7 @@
             try {
                 const apiUrl = "http://127.0.0.1:8069/api/videos/"
                 thumb = document.getElementById('thumbnailField');
+                console.log(thumb.name)
                 // Get the form dataa
                 const formData = new FormData(form);
                 thumb.addEventListener('change', function() {
