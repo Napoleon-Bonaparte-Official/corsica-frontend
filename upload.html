@@ -269,12 +269,13 @@
             var thumb = null;
             var form = document.getElementById('myForm');
             var base64String=null;
+            var video = null;
             formData.append('video', vid);
             
             try {
                 const apiUrl = "http://127.0.0.1:8069/api/videos/"
                 thumb = document.getElementById('thumbnailField');
-                console.log(thumb.name)
+                video = (thumb.files[0]).name;
                 // Get the form dataa
                 const formData = new FormData(form);
                 thumb.addEventListener('change', function() {
@@ -302,7 +303,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name, description, base64String}) // convert payload to JSON
+                    body: JSON.stringify({ name: name, description: description, thumbnail: base64String, video: video}) // convert payload to JSON
                 })
                 
                 fetch(apiUrl, {
