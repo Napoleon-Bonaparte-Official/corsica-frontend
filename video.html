@@ -16,12 +16,6 @@
             margin-bottom: 10px;
         }
 
-        #description{
-            font-size: 16px;
-            color: #F1F1F1;
-            line-height: 1.6;
-        }
-
         header {
             color: white;
             padding: 10px;
@@ -57,20 +51,7 @@
 
                 &:hover {
                     cursor: pointer;
-                    background: rgba(255, 255, 255, 0.2);
-                }
-
-                &:active {
-                    background: rgba(255, 255, 255, 0.2);
-                }
-            }
-
-            &[type="upload2"] {
-                width: 10%;
-
-                &:hover {
-                    cursor: pointer;
-                    background: rgba(255, 255, 255, 0.2);
+                    background: rgba(150, 137, 137, 0.2);
                 }
 
                 &:active {
@@ -82,8 +63,8 @@
         /* container object defining video, recommended, and description */
         #container {
             border-radius: 20px;
-            border-left: 1px solid rgba(58, 58, 60, 0.3);
-            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            border: 1px solid rgba(58, 58, 60, 0.3);
+            /* border-top: 1px solid rgba(58, 58, 60, 0.3); */
             transition: all 0.2s ease-in-out;
             color: white;
             padding: 20px;
@@ -107,18 +88,13 @@
             }
         }
 
-        #desc-box{
-            margin: auto;
-            width:95%;
-            height:100%;
-        }
-
         .grid {
             display: grid;
             grid-template-columns: 75% auto;
             grid-template-rows: repeat(2, auto);
             grid-column-gap: 10px;
             grid-row-gap: 10px;
+            padding: 20px;
         }
     </style>
 </head>
@@ -130,11 +106,10 @@
         <button id="inputField" type="upload">Upload</button>
     </header>
 
-    <!-- <footer>    </footer> -->
     <div class="grid">
         <!-- video player -->
-        <div id="containerVid" height="100%" type="video">
-            <video id="video" width="75%" height="100%" controls>
+        <div id="container" height="100%" type="video">
+            <video id="video" width="50%" height="100%" controls>
                 <source src="" type="video/mp4">
             </video>
         </div>
@@ -146,7 +121,7 @@
             <div id="creator">CREATOR</div>
             <div id="views">VIEWS</div>
             <div id="desc-box">
-                <div id="description">DESCRIPTION</div>
+                <div id="description" type="description">DESCRIPTION</div>
             </div>
             
             <!-- <button id="follow">{the uid}</button> -->
@@ -218,7 +193,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(videoID) //JSON data
+                    body: JSON.stringify(views) //JSON data
                 })
             }catch (error) {
                 console.error('Error:', error);
