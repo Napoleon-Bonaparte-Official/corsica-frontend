@@ -155,48 +155,48 @@
         // thumbnail link thing
         function renderVideos(videos) {
             const videoGrid = document.querySelector('.videoGrid');
-
+        
             videos.forEach(video => {
                 const videoItem = document.createElement('div');
                 videoItem.classList.add('grid-item');
                 videoItem.classList.add('video-item');
-
+        
                 const videoLink = document.createElement('a');
                 videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video"+"?videoID="+video["videoID"]; // Assuming video object has a 'video' property for the URL
-                videoLink.textContent = video.name; // Assuming video object has a 'name' property for the title--- the title
-                console.log(videoLink.href);
-
-                // const videoImage = document.createElement('img');
-                // videoImage.src = `data:image/png;base64,${video.base64}`; // Assuming 'base64' contains the base64 encoded thumbnail
-                // videoImage.classList.add('video');
-
+        
                 const videoImage = document.createElement('img');
                 videoImage.classList.add('video');
-                //console.log(video.base64);
                 var encode = `${video.base64}`;
                 var step1 = encode.replace(/\\n/g, '');
-                // Remove Invalid string b'
                 var step2 = step1.replace(/b'/g, '');
-                // Remove Invalid characters -:'\
                 var base64String = step2.replace(/[-:'\\]/g, '');
                 videoImage.src = `data:image/png;base64,${base64String}`;
-                videoImage.classList.add('video')
-                //console.log(base64String);
-
+        
+                const title = document.createElement('span');
+                title.textContent = video.name; // Assuming video object has a 'name' property for the title
+        
                 const viewCount = document.createElement('span');
                 viewCount.textContent = `Views: ${video.views}`; // Assuming video object has a 'views' property
                 viewCount.classList.add('view-count'); // Add a class for styling
-
-                // Insert a line break between the view count and the title
+        
                 const lineBreak = document.createElement('br');
-
-                videoItem.appendChild(videoImage);
+        
+                // Append the videoLink to the videoItem
                 videoItem.appendChild(videoLink);
-                videoItem.appendChild(lineBreak); // Append the line break
+        
+                // Append the videoImage inside the videoLink
+                videoLink.appendChild(videoImage);
+        
+                // Append the title, view count, and line break to the videoItem
+                videoItem.appendChild(title);
+                videoItem.appendChild(lineBreak);
                 videoItem.appendChild(viewCount);
+        
+                // Append the videoItem to the videoGrid
                 videoGrid.appendChild(videoItem);
             });
         }
+        
 
 
 
