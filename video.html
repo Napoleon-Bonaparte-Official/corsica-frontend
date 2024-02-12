@@ -127,7 +127,7 @@
             <div id="description">DESCRIPTION</div>
             <div id="creator">CREATOR</div>
             <div id="views">VIEWS</div>
-            <button id="follow">{the uid}</button>
+            <!-- <button id="follow">{the uid}</button> -->
             <!-- <button id="like">Like</button>
             <button id="dislike">Dislike</button> -->
         </div>
@@ -174,7 +174,7 @@
             //var dislike = document.getElementById('dislike');
             var video = document.getElementById('video')
             var views = document.getElementById("views");
-            
+
             title.innerText = data.title;
             description.innerText = data.description;
             creator.innerText = data.uid;
@@ -190,9 +190,10 @@
             "uid": "create",
             "views": "views",
             "video": "vid"
-    })
+        })
         // Call fetchData function with the API URL
         fetchVideo(apiUrl);
     </script>
 </body>
+
 </html>

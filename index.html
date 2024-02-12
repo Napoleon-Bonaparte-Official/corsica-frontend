@@ -138,7 +138,7 @@
     <hr>
 
     <!-- video grid -->
-    <div class="videoGrid">
+    <!-- <div class="videoGrid">
         <div id="video" class="grid-item">
             <img src="/corsica-frontend/images/computercat.jpg" class="video">
             <a href="/corsica-frontend/video">FORTNITE BATTLEPASS</a>
@@ -183,7 +183,59 @@
             <img src="/corsica-frontend/images/computercat.jpg" class="video">
             <a href="/corsica-frontend/video">FORTNITE BATTLEPASS</a>
         </div>
-    </div>
+    </div> -->
+
+    <div class="videoGrid"></div>
+
+    <script>
+        // Fetch videos from the backend
+        async function fetchVideos() {
+            try {
+                const apiUrl = "http:/url/goes/here/"
+
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching videos:', error);
+                return [];
+            }
+        }
+
+        // Function to render videos on the page
+        function renderVideos(videos) {
+            const videoGrid = document.querySelector('.videoGrid');
+
+            videos.forEach(video => {
+                const videoItem = document.createElement('div');
+                videoItem.classList.add('grid-item');
+
+                const videoLink = document.createElement('a');
+                videoLink.href = video.url; // Assuming video object has a URL property
+                videoLink.textContent = video.title; // Assuming video object has a title property
+
+                const videoImage = document.createElement('img');
+                videoImage.src = video.thumbnail; // Assuming video object has a thumbnail property
+                videoImage.classList.add('video');
+
+                videoItem.appendChild(videoImage);
+                videoItem.appendChild(videoLink);
+
+                videoGrid.appendChild(videoItem);
+            });
+        }
+
+        // Load videos when the page is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const videos = await fetchVideos();
+                renderVideos(videos);
+            } catch (error) {
+                console.error('Error loading videos:', error);
+            }
+        });
+
+    </script>
 
 </body>
 
