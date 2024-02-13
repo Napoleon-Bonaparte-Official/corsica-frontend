@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -278,7 +277,6 @@
             const vid = document.getElementById('videoField').files[0]; // email
             var formData = new FormData();
             var thumb = document.getElementById('thumbnailField');
-            var base64 = "";
             var base64String = "";
             var form = document.getElementById('myForm');
             var video = null;
@@ -296,25 +294,21 @@
                 video = (thumb.files[0]).name;
                 convertImageToBase64(thumb)
                 .then(base64String => {
-                    base64 = base64String; 
+                    console.log(base64String)
+                    fetch(apiUrl, {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name: name, description: description, thumbnail: base64String, video:video , uid: uid}) // convert payload to JSON
+                    })
                     // Do something with the base64String, such as sending it to a server or displaying it
                 })
                 .catch(error => {
                     console.error(error);
                 });
-                base64String = base64;
-                
-                console.log(formData)
-                
                 //upload desc, name, and thumbnail
-                const uploadResponse = await fetch(apiUrl, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name: name, description: description, thumbnail: base64String, video:video , uid: uid}) // convert payload to JSON
-                })
 
                 //upload video
                 fetch(apiUrl, {
