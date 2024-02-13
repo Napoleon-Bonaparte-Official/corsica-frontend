@@ -274,12 +274,14 @@
             const uid = localStorage.getItem("uid")
             const name = document.getElementById('nameField').value; // full name
             const description = document.getElementById('descField').value; // date of birth // username
-            const vid = document.getElementById('videoField').files[0]; // email
+            const vid = document.getElementById('videoField'); // email
             var formData = new FormData();
             var thumb = document.getElementById('thumbnailField');
             var base64String = "";
             var form = document.getElementById('myForm');
             var video = null;
+            var thumb_name = thumb.files[0].name
+            console.log(thumb_name)
             console.log(uid)
             if(uid == null)
             {
@@ -287,21 +289,22 @@
                 return "SIGN IN"
             }
 
-            formData.append('video', vid);
+            formData.append('video', vid.files[0]);
+            console.log(vid.files[0])
             try {
-                const apiUrl = "http://127.0.0.1:8069/api/video/"
+                const apiUrl = "http://127.0.0.1:8069/api/videos/"
                 var formData = new FormData(form);
-                video = (thumb.files[0]).name;
+                video = (vid.files[0]).name;
                 convertImageToBase64(thumb)
                 .then(base64String => {
-                    console.log(base64String)
+                    const base64 = "data:image/png;base64," + base64String;
                     fetch(apiUrl, {
                         method: 'POST',
                         credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ name: name, description: description, thumbnail: base64String, video:video , uid: uid}) // convert payload to JSON
+                        body: JSON.stringify({ name: name, description: description, thumbnail: thumb_name, base64: base64String, video: video , uid: uid}) // convert payload to JSON
                     })
                     // Do something with the base64String, such as sending it to a server or displaying it
                 })
