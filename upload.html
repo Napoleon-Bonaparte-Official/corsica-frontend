@@ -292,7 +292,7 @@
             formData.append('video', vid.files[0]);
             console.log(vid.files[0])
             try {
-                const apiUrl = "http://127.0.0.1:8069/api/videos/"
+                const apiUrl = "http://127.0.0.1:8069/api/video/"
                 var formData = new FormData(form);
                 video = (vid.files[0]).name;
                 convertImageToBase64(thumb)
