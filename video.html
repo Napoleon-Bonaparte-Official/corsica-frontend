@@ -130,7 +130,7 @@
 <body>
     <header>
         <a href="/corsica-frontend/" id="inputField" type="upload">Home</a>
-        <input type="text" id="inputField" name="searchBar" required minlength="1" placeholder="Search">
+        <!-- <input type="text" id="inputField" name="searchBar" required minlength="1" placeholder="Search"> -->
         <a href= "/corsica-frontend/upload"id="inputField" type="button">Upload</a>
     </header>
 
@@ -208,7 +208,6 @@
             var video = document.getElementById('video')
             var views = document.getElementById("views");
             var source = video.querySelector('source');
-            
 
             videoID = data['videoID'];
             title.innerText = data["name"];
