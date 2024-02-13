@@ -272,6 +272,7 @@
 
         async function submitForm() {
             // get the elements (username, password, etc)
+            const uid = localStorage.getItem("uid")
             const name = document.getElementById('nameField').value; // full name
             const description = document.getElementById('descField').value; // date of birth // username
             const vid = document.getElementById('videoField').files[0]; // email
@@ -281,6 +282,12 @@
             var base64String = "";
             var form = document.getElementById('myForm');
             var video = null;
+            console.log(uid)
+            if(uid == null)
+            {
+                console.log("LOG IN PRIOR TO UPLOAD")
+                return "SIGN IN"
+            }
 
             formData.append('video', vid);
             try {
@@ -306,7 +313,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name: name, description: description, thumbnail: base64String, video:video }) // convert payload to JSON
+                    body: JSON.stringify({ name: name, description: description, thumbnail: base64String, video:video , uid: uid}) // convert payload to JSON
                 })
 
                 //upload video

@@ -53,7 +53,7 @@
             color: white;
         }
 
-        #inputField {
+        .inputField {
             width: 70%;
             background-color: #2c2c2e;
             padding: 1em;
@@ -125,10 +125,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <!-- search and upload and home -->
     <header>
-        <a href="/corsica-frontend/" id="inputField" type="button">Home</a>
-        <input type="text" id="inputField" placeholder="Search">
-        <a href= "/corsica-frontend/upload"id="inputField" type="button">Upload</a>
-        <a href="/corsica-frontend/login" id="inputField" type="button">Login</a>
+        <a href="/corsica-frontend/" class="inputField" type="button">Home</a>
+        <form id = "myForm">
+            <input type="text" id="query" class="inputField" placeholder="Search">
+        </form>
+        <a href= "/corsica-frontend/upload"class="inputField" type="button">Upload</a>
+        <a href="/corsica-frontend/login" class="inputField" type="button">Login</a>
     </header>
 
     <!-- navigation chips -->
@@ -145,47 +147,62 @@
 
     <script>
         // thumbnail link thing
-        function renderVideos(videos) {
+        function clearVideos(){
             const videoGrid = document.querySelector('.videoGrid');
-        
+            // Remove all child elements from the videoGrid
+            while (videoGrid.firstChild) {
+                videoGrid.removeChild(videoGrid.firstChild);
+            }
+        }
+        function renderVideos(videos, query="") {
+            const videoGrid = document.querySelector('.videoGrid');
+            const qlist = query.split(" ")
+            console.log(qlist)
             videos.forEach(video => {
-                const videoItem = document.createElement('div');
-                videoItem.classList.add('grid-item');
-                videoItem.classList.add('video-item');
-        
-                const videoLink = document.createElement('a');
-                videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video"+"?videoID="+video["videoID"]; // Assuming video object has a 'video' property for the URL
-        
-                const videoImage = document.createElement('img');
-                videoImage.classList.add('video');
-                var encode = `${video.base64}`;
-                var step1 = encode.replace(/\\n/g, '');
-                var step2 = step1.replace(/b'/g, '');
-                var base64String = step2.replace(/[-:'\\]/g, '');
-                videoImage.src = `data:image/png;base64,${base64String}`;
-        
-                const title = document.createElement('span');
-                title.textContent = video.name; // Assuming video object has a 'name' property for the title
-        
-                const viewCount = document.createElement('span');
-                viewCount.textContent = `Views: ${video.views}`; // Assuming video object has a 'views' property
-                viewCount.classList.add('view-count'); // Add a class for styling
-        
-                const lineBreak = document.createElement('br');
-        
-                // Append the videoLink to the videoItem
-                videoItem.appendChild(videoLink);
-        
-                // Append the videoImage inside the videoLink
-                videoLink.appendChild(videoImage);
-        
-                // Append the title, view count, and line break to the videoItem
-                videoItem.appendChild(title);
-                videoItem.appendChild(lineBreak);
-                videoItem.appendChild(viewCount);
-        
-                // Append the videoItem to the videoGrid
-                videoGrid.appendChild(videoItem);
+                for(let word = 0; word < qlist.length; word++){
+                    console.log(qlist[word])
+                    console.log(video['name'].toLowerCase().includes(qlist[word].toLowerCase()))
+                    if(video['name'].toLowerCase().includes(qlist[word].toLowerCase())){
+                        const videoItem = document.createElement('div');
+                        videoItem.classList.add('grid-item');
+                        videoItem.classList.add('video-item');
+                
+                        const videoLink = document.createElement('a');
+                        videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video"+"?videoID="+video["videoID"]; // Assuming video object has a 'video' property for the URL
+                
+                        const videoImage = document.createElement('img');
+                        videoImage.classList.add('video');
+                        var encode = `${video.base64}`;
+                        var step1 = encode.replace(/\\n/g, '');
+                        var step2 = step1.replace(/b'/g, '');
+                        var base64String = step2.replace(/[-:'\\]/g, '');
+                        videoImage.src = `data:image/png;base64,${base64String}`;
+                
+                        const title = document.createElement('span');
+                        title.textContent = video.name; // Assuming video object has a 'name' property for the title
+                
+                        const viewCount = document.createElement('span');
+                        viewCount.textContent = `Views: ${video.views}`; // Assuming video object has a 'views' property
+                        viewCount.classList.add('view-count'); // Add a class for styling
+                
+                        const lineBreak = document.createElement('br');
+                
+                        // Append the videoLink to the videoItem
+                        videoItem.appendChild(videoLink);
+                
+                        // Append the videoImage inside the videoLink
+                        videoLink.appendChild(videoImage);
+                
+                        // Append the title, view count, and line break to the videoItem
+                        videoItem.appendChild(title);
+                        videoItem.appendChild(lineBreak);
+                        videoItem.appendChild(viewCount);
+                
+                        // Append the videoItem to the videoGrid
+                        videoGrid.appendChild(videoItem);
+                        break;
+                    }
+                }
             });
         }
         
@@ -203,7 +220,21 @@
                 console.error('Error loading videos:', error);
             }
         });
-
+        const form = document.getElementById('myForm');
+        form.addEventListener('submit',  async () => {
+            event.preventDefault(); // Prevent default form submission behavior
+            try {
+                const apiUrl = "http://127.0.0.1:8069/api/videos"
+                const response = await fetch(apiUrl);
+                const videos = await response.json();
+                const query = document.getElementById("query").value;
+                clearVideos()
+                renderVideos(videos, query);
+                console.log('wasd')
+            } catch (error) {
+                console.error('Error loading videos:', error);
+            }
+        });
 
     </script>
 
