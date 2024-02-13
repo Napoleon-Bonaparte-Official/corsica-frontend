@@ -302,7 +302,9 @@
                         method: 'POST',
                         credentials: 'include',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS',
+                            'Access-Control-Allow-Origin':'http://127.0.0.1:4100/'
                         },
                         body: JSON.stringify({ name: name, description: description, thumbnail: thumb_name, base64: base64String, video: video , uid: uid}) // convert payload to JSON
                     })
