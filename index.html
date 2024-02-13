@@ -126,9 +126,7 @@
     <!-- search and upload and home -->
     <header>
         <a href="/corsica-frontend/" class="inputField" type="button">Home</a>
-        <form id = "myForm">
-            <input type="text" id="query" class="inputField" placeholder="Search">
-        </form>
+        <input type="text" id="query" class="inputField" placeholder="Search">
         <a href= "/corsica-frontend/upload"class="inputField" type="button">Upload</a>
         <a href="/corsica-frontend/login" class="inputField" type="button">Login</a>
     </header>
@@ -314,7 +312,7 @@
         // Load videos when the page is loaded
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                const apiUrl = "http://127.0.0.1:8069/api/videos"
+                const apiUrl = "http://127.0.0.1:8069/api/video"
                 const response = await fetch(apiUrl);
                 const videos = await response.json();
                 renderVideos(videos);
@@ -322,25 +320,27 @@
                 console.error('Error loading videos:', error);
             }
         });
-        const form = document.getElementById('myForm');
-        form.addEventListener('submit',  async () => {
-            event.preventDefault(); // Prevent default form submission behavior
-            try {
-                const apiUrl = "http://127.0.0.1:8069/api/videos"
-                const response = await fetch(apiUrl);
-                const videos = await response.json();
-                const query = document.getElementById("query").value;
-                clearVideos()
-                renderVideos(videos, query);
-            } catch (error) {
-                console.error('Error loading videos:', error);
+        const form = document.getElementById('query');
+        form.addEventListener('keypress',  async (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent default form submission behavior
+                try {
+                    const apiUrl = "http://127.0.0.1:8069/api/video"
+                    const response = await fetch(apiUrl);
+                    const videos = await response.json();
+                    const query = document.getElementById("query").value;
+                    clearVideos()
+                    renderVideos(videos, query);
+                } catch (error) {
+                    console.error('Error loading videos:', error);
+                }
             }
         });
         const gaming = document.getElementById('gaming');
         gaming.addEventListener('click',  async () => {
             event.preventDefault(); // Prevent default form submission behavior
             try {
-                const apiUrl = "http://127.0.0.1:8069/api/videos"
+                const apiUrl = "http://127.0.0.1:8069/api/video"
                 const response = await fetch(apiUrl);
                 const videos = await response.json();
                 const genre = "gaming"
@@ -354,7 +354,7 @@
         music.addEventListener('click',  async () => {
             event.preventDefault(); // Prevent default form submission behavior
             try {
-                const apiUrl = "http://127.0.0.1:8069/api/videos"
+                const apiUrl = "http://127.0.0.1:8069/api/video"
                 const response = await fetch(apiUrl);
                 const videos = await response.json();
                 const genre = "music"
@@ -368,7 +368,7 @@
         sports.addEventListener('click',  async () => {
             event.preventDefault(); // Prevent default form submission behavior
             try {
-                const apiUrl = "http://127.0.0.1:8069/api/videos"
+                const apiUrl = "http://127.0.0.1:8069/api/video"
                 const response = await fetch(apiUrl);
                 const videos = await response.json();
                 const genre = "sports"
@@ -382,7 +382,7 @@
         edu.addEventListener('click',  async () => {
             event.preventDefault(); // Prevent default form submission behavior
             try {
-                const apiUrl = "http://127.0.0.1:8069/api/videos"
+                const apiUrl = "http://127.0.0.1:8069/api/video"
                 const response = await fetch(apiUrl);
                 const videos = await response.json();
                 const genre = "educational"
