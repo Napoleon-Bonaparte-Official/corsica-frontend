@@ -218,7 +218,7 @@
             source.src=data["video"];
             video.load();
             try {
-                const url = "http://127.0.0.1:8069/api/videos/"
+                const url = "http://127.0.0.1:8069/api/video/"
                 fetch(url, {
                     method: 'PUT',
                     headers: {
@@ -240,7 +240,7 @@
         //    "video": "vid"
         //})
         // Call fetchData function with the API URL
-        const apiUrl = 'http://127.0.0.1:8069/api/videos/';
+        const apiUrl = 'http://127.0.0.1:8069/api/video/';
         const objectId = '1'; // Replace 'your_object_id_here' with the actual object ID
         fetchVideo(apiUrl, objectId);
 
@@ -295,7 +295,7 @@
             // Load videos when the page is loaded
             document.addEventListener('DOMContentLoaded', async () => {
                 try {
-                    const apiUrl = "http://127.0.0.1:8069/api/videos"
+                    const apiUrl = "http://127.0.0.1:8069/api/video"
                     const response = await fetch(apiUrl);
                     const videos = await response.json();
                     renderVideos(videos);
