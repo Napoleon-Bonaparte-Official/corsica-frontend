@@ -219,7 +219,7 @@
 
             <!-- submit button -->
             <input type="hidden" id="csrfTokenField" name="csrf_token" value="">
-            <input type="submit" value="Create Account"><br>
+            <input type="submit" value="Upload Video"><br>
 
         </form>
 
@@ -233,13 +233,6 @@
         </div>
     </div>
 
-    <!-- account creation success (200) -->
-    <div class="container" id="popupWindow200" style="display: none;">
-        <div class="error">
-            <p><strong>Account Created</strong></p>
-            <input id="closeButton200" type="submit" value="Go to Dashboard">
-        </div>
-    </div>
 
     <script>
         window.addEventListener('load', function() {
@@ -248,17 +241,34 @@
         });
         // 200 success
         function sucess() {
-            // the login form elements
-            var popupwindow200 = document.getElementById("popupWindow200");
-            var closeButton200 = document.getElementById("closeButton200");
+            console.log("UPLOAD SUCCESS")
+        }
 
-            popupWindow200.style.display = "block"; // display the window
+        // Assuming you have an input element with id="imageInput" where users can select an image file
 
-            // redirect to dashboard
-            closeButton200.addEventListener("click", function () {
-                window.location.replace("/corsica-frontend/users");
+// Function to handle the image conversion
+        function convertImageToBase64(thumbnail) {
+            return new Promise((resolve, reject) => {
+                // Make sure a file is selected
+                if (thumbnail.files.length > 0) {
+                    var file = thumbnail.files[0];
+                    // Create a FileReader object
+                    var reader = new FileReader();
+                    // Set up a function to be called once the file is loaded
+                    reader.onload = function(event) {
+                        // event.target.result contains the base64 encoded image
+                        base64String = event.target.result.split(',')[1]; // Remove the data URL prefix
+                        resolve(base64String);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                } else {
+                    reject('Please select an image file.');
+                }
             });
         }
+
+
 
         async function submitForm() {
             // get the elements (username, password, etc)
@@ -266,83 +276,54 @@
             const description = document.getElementById('descField').value; // date of birth // username
             const vid = document.getElementById('videoField').files[0]; // email
             var formData = new FormData();
-            var thumb = null;
+            var thumb = document.getElementById('thumbnailField');
+            var base64 = "";
+            var base64String = "";
             var form = document.getElementById('myForm');
-            var base64String=null;
-            var video = null;
             formData.append('video', vid);
-            
             try {
-                const apiUrl = "http://127.0.0.1:8069/api/videos/"
-                thumb = document.getElementById('thumbnailField');
-                video = (thumb.files[0]).name;
-                // Get the form dataa
-                const formData = new FormData(form);
-                thumb.addEventListener('change', function() {
-                    
-                    const file = this.files[0];
-                    // Check if file is selected
-                    if (file) {
-                    const reader = new FileReader();
-                    
-                    reader.onload = function() {
-                        // Convert image to Base64 string
-                        base64String = reader.result.split(',')[1];
-                        console.log(base64String);
-
-                        // Now you can use base64String here or perform further actions with it
-                    }
-                    
-                    reader.readAsDataURL(file);
-                    }
+                const apiUrl = "http://127.0.0.1:8069/api/video/"
+                var formData = new FormData(form);
+                convertImageToBase64(thumb)
+                .then(base64String => {
+                    base64 = base64String; 
+                    // Do something with the base64String, such as sending it to a server or displaying it
                 })
-                // Send a POST request to your backend server
+                .catch(error => {
+                    console.error(error);
+                });
+                base64String = base64;
+                
+                console.log(formData)
+                
+                //upload desc, name, and thumbnail
                 const uploadResponse = await fetch(apiUrl, {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name: name, description: description, thumbnail: base64String, video: video}) // convert payload to JSON
+                    body: JSON.stringify({ name: name, description: description, thumbnail: base64String }) // convert payload to JSON
                 })
-                
+
+                //upload video
                 fetch(apiUrl, {
                     method: 'POST',
                     credentials: 'include',
                     body: formData
                 })
-                .then(response => {
-                    // Handle response from the server
-                    console.log('Video uploaded successfully');
-                })
                 .catch(error => {
                     // Handle any errors
                     console.error('Error uploading video:', error);
                 });
-
-                // error occured and login didn't work
                 if (!uploadResponse.ok) {
-                    throw new Error('Login request was not successful');
+                    throw new Error('Upload request was not successful');
                 }
-
-                const loginData = await loginResponse.json();
-                console.log(loginData);
-                if (loginData) {
-                    localStorage.setItem("uid", loginData.uid);
-                    sucess();
-
-                    localStorage.setItem("usernameData", uid);
-                    localStorage.setItem("flagData", 1);
-                }
-                else {
-                    // Login failed, show an error message or take appropriate action
-                    console.error("login failed");
-                }
-            } catch (error) {
-                console.error('Error:', error);
+            }
+            catch{
+                console.log("TRY FAILED")
             }
         }
-
         const form = document.getElementById('myForm');
         form.addEventListener('submit', function (event) {
             event.preventDefault();
