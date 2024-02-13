@@ -280,10 +280,13 @@
             var base64 = "";
             var base64String = "";
             var form = document.getElementById('myForm');
+            var video = null;
+
             formData.append('video', vid);
             try {
                 const apiUrl = "http://127.0.0.1:8069/api/video/"
                 var formData = new FormData(form);
+                video = (thumb.files[0]).name;
                 convertImageToBase64(thumb)
                 .then(base64String => {
                     base64 = base64String; 
@@ -303,7 +306,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name: name, description: description, thumbnail: base64String }) // convert payload to JSON
+                    body: JSON.stringify({ name: name, description: description, thumbnail: base64String, video:video }) // convert payload to JSON
                 })
 
                 //upload video
