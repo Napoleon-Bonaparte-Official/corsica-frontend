@@ -181,8 +181,8 @@
             z-index: -1;
         }
 
-        label{
-            color:white;
+        label {
+            color: white;
         }
 
         a,
@@ -234,7 +234,7 @@
 
 
     <script>
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             // Reset the form on page load
             document.getElementById('myForm').reset();
         });
@@ -245,7 +245,7 @@
 
         // Assuming you have an input element with id="imageInput" where users can select an image file
 
-// Function to handle the image conversion
+        // Function to handle the image conversion
         function convertImageToBase64(thumbnail) {
             return new Promise((resolve, reject) => {
                 // Make sure a file is selected
@@ -254,12 +254,12 @@
                     // Create a FileReader object
                     var reader = new FileReader();
                     // Set up a function to be called once the file is loaded
-                    reader.onload = function(event) {
+                    reader.onload = function (event) {
                         // event.target.result contains the base64 encoded image
                         base64String = event.target.result.split(',')[1]; // Remove the data URL prefix
                         resolve(base64String);
                     };
-                    
+
                     reader.readAsDataURL(file);
                 } else {
                     reject('Please select an image file.');
@@ -283,8 +283,7 @@
             var thumb_name = thumb.files[0].name
             console.log(thumb_name)
             console.log(uid)
-            if(uid == null)
-            {
+            if (uid == null) {
                 console.log("LOG IN PRIOR TO UPLOAD")
                 return "SIGN IN"
             }
@@ -296,23 +295,23 @@
                 var formData = new FormData(form);
                 video = (vid.files[0]).name;
                 convertImageToBase64(thumb)
-                .then(base64String => {
-                    const base64 = "data:image/png;base64," + base64String;
-                    fetch(apiUrl, {
-                        method: 'POST',
-                        credentials: 'include',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS',
-                            'Access-Control-Allow-Origin':'http://127.0.0.1:4100/'
-                        },
-                        body: JSON.stringify({ name: name, description: description, thumbnail: thumb_name, base64: base64String, video: video , uid: uid}) // convert payload to JSON
+                    .then(base64String => {
+                        const base64 = "data:image/png;base64," + base64String;
+                        fetch(apiUrl, {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Methods': 'POST,PATCH,OPTIONS',
+                                'Access-Control-Allow-Origin': 'http://127.0.0.1:4100/'
+                            },
+                            body: JSON.stringify({ name: name, description: description, thumbnail: thumb_name, base64: base64String, video: video, uid: uid }) // convert payload to JSON
+                        })
+                        // Do something with the base64String, such as sending it to a server or displaying it
                     })
-                    // Do something with the base64String, such as sending it to a server or displaying it
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+                    .catch(error => {
+                        console.error(error);
+                    });
                 //upload desc, name, and thumbnail
 
                 //upload video
@@ -321,15 +320,15 @@
                     credentials: 'include',
                     body: formData
                 })
-                .catch(error => {
-                    // Handle any errors
-                    console.error('Error uploading video:', error);
-                });
+                    .catch(error => {
+                        // Handle any errors
+                        console.error('Error uploading video:', error);
+                    });
                 if (!uploadResponse.ok) {
                     throw new Error('Upload request was not successful');
                 }
             }
-            catch{
+            catch {
                 console.log("TRY FAILED")
             }
         }

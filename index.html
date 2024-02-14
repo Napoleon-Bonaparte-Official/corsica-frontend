@@ -115,8 +115,6 @@
             padding: 20px;
             height: 30vh;
         }
-
-
     </style>
 </head>
 
@@ -127,7 +125,7 @@
     <header>
         <a href="/corsica-frontend/" class="inputField" type="button">Home</a>
         <input type="text" id="query" class="inputField" placeholder="Search">
-        <a href= "/corsica-frontend/upload"class="inputField" type="button">Upload</a>
+        <a href="/corsica-frontend/upload" class="inputField" type="button">Upload</a>
         <a href="/corsica-frontend/login" class="inputField" type="button">Login</a>
     </header>
 
@@ -145,28 +143,28 @@
 
     <script>
         // thumbnail link thing
-        function clearVideos(){
+        function clearVideos() {
             const videoGrid = document.querySelector('.videoGrid');
             // Remove all child elements from the videoGrid
             while (videoGrid.firstChild) {
                 videoGrid.removeChild(videoGrid.firstChild);
             }
         }
-        function renderVideos(videos, query="", genre="") {
+        function renderVideos(videos, query = "", genre = "") {
             const videoGrid = document.querySelector('.videoGrid');
             const qlist = query.split(" ")
-            if(genre != ""){
+            if (genre != "") {
                 console.log("genre")
                 console.log(genre);
                 videos.forEach(video => {
-                    if(video['genre'].toLowerCase()==genre){
+                    if (video['genre'].toLowerCase() == genre) {
                         const videoItem = document.createElement('div');
                         videoItem.classList.add('grid-item');
                         videoItem.classList.add('video-item');
-                
+
                         const videoLink = document.createElement('a');
-                        videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video"+"?videoID="+video["videoID"]; // Assuming video object has a 'video' property for the URL
-                
+                        videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video" + "?videoID=" + video["videoID"]; // Assuming video object has a 'video' property for the URL
+
                         const videoImage = document.createElement('img');
                         videoImage.classList.add('video');
                         var encode = `${video.base64}`;
@@ -174,46 +172,46 @@
                         var step2 = step1.replace(/b'/g, '');
                         var base64String = step2.replace(/[-:'\\]/g, '');
                         videoImage.src = `data:image/png;base64,${base64String}`;
-                
+
                         const title = document.createElement('span');
                         title.textContent = video.name; // Assuming video object has a 'name' property for the title
-                
+
                         const viewCount = document.createElement('span');
                         viewCount.textContent = `Views: ${video.views}`; // Assuming video object has a 'views' property
                         viewCount.classList.add('view-count'); // Add a class for styling
-                
+
                         const lineBreak = document.createElement('br');
-                
+
                         // Append the videoLink to the videoItem
                         videoItem.appendChild(videoLink);
-                
+
                         // Append the videoImage inside the videoLink
                         videoLink.appendChild(videoImage);
-                
+
                         // Append the title, view count, and line break to the videoItem
                         videoItem.appendChild(title);
                         videoItem.appendChild(lineBreak);
                         videoItem.appendChild(viewCount);
-                
+
                         // Append the videoItem to the videoGrid
                         videoGrid.appendChild(videoItem);
                     }
                 });
             }
-            else if(query != ""){
+            else if (query != "") {
                 console.log("query")
                 videos.forEach(video => {
-                    for(let word = 0; word < qlist.length; word++){
+                    for (let word = 0; word < qlist.length; word++) {
                         console.log(qlist[word])
                         console.log(video['name'].toLowerCase().includes(qlist[word].toLowerCase()))
-                        if(video['name'].toLowerCase().includes(qlist[word].toLowerCase())){
+                        if (video['name'].toLowerCase().includes(qlist[word].toLowerCase())) {
                             const videoItem = document.createElement('div');
                             videoItem.classList.add('grid-item');
                             videoItem.classList.add('video-item');
-                    
+
                             const videoLink = document.createElement('a');
-                            videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video"+"?videoID="+video["videoID"]; // Assuming video object has a 'video' property for the URL
-                    
+                            videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video" + "?videoID=" + video["videoID"]; // Assuming video object has a 'video' property for the URL
+
                             const videoImage = document.createElement('img');
                             videoImage.classList.add('video');
                             var encode = `${video.base64}`;
@@ -221,27 +219,27 @@
                             var step2 = step1.replace(/b'/g, '');
                             var base64String = step2.replace(/[-:'\\]/g, '');
                             videoImage.src = `data:image/png;base64,${base64String}`;
-                    
+
                             const title = document.createElement('span');
                             title.textContent = video.name; // Assuming video object has a 'name' property for the title
-                    
+
                             const viewCount = document.createElement('span');
                             viewCount.textContent = `Views: ${video.views}`; // Assuming video object has a 'views' property
                             viewCount.classList.add('view-count'); // Add a class for styling
-                    
+
                             const lineBreak = document.createElement('br');
-                    
+
                             // Append the videoLink to the videoItem
                             videoItem.appendChild(videoLink);
-                    
+
                             // Append the videoImage inside the videoLink
                             videoLink.appendChild(videoImage);
-                    
+
                             // Append the title, view count, and line break to the videoItem
                             videoItem.appendChild(title);
                             videoItem.appendChild(lineBreak);
                             videoItem.appendChild(viewCount);
-                    
+
                             // Append the videoItem to the videoGrid
                             videoGrid.appendChild(videoItem);
                             break;
@@ -249,16 +247,16 @@
                     }
                 });
             }
-            else{
+            else {
                 console.log("nothing")
                 videos.forEach(video => {
                     const videoItem = document.createElement('div');
                     videoItem.classList.add('grid-item');
                     videoItem.classList.add('video-item');
-            
+
                     const videoLink = document.createElement('a');
-                    videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video"+"?videoID="+video["videoID"]; // Assuming video object has a 'video' property for the URL
-            
+                    videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video" + "?videoID=" + video["videoID"]; // Assuming video object has a 'video' property for the URL
+
                     const videoImage = document.createElement('img');
                     videoImage.classList.add('video');
                     var encode = `${video.base64}`;
@@ -266,34 +264,34 @@
                     var step2 = step1.replace(/b'/g, '');
                     var base64String = step2.replace(/[-:'\\]/g, '');
                     videoImage.src = `data:image/png;base64,${base64String}`;
-            
+
                     const title = document.createElement('span');
                     title.textContent = video.name; // Assuming video object has a 'name' property for the title
-            
+
                     const viewCount = document.createElement('span');
                     viewCount.textContent = `Views: ${video.views}`; // Assuming video object has a 'views' property
                     viewCount.classList.add('view-count'); // Add a class for styling
-            
+
                     const lineBreak = document.createElement('br');
-            
+
                     // Append the videoLink to the videoItem
                     videoItem.appendChild(videoLink);
-            
+
                     // Append the videoImage inside the videoLink
                     videoLink.appendChild(videoImage);
-            
+
                     // Append the title, view count, and line break to the videoItem
                     videoItem.appendChild(title);
                     videoItem.appendChild(lineBreak);
                     videoItem.appendChild(viewCount);
-            
+
                     // Append the videoItem to the videoGrid
                     videoGrid.appendChild(videoItem);
                 });
             }
-            
+
         }
-        
+
 
 
 
@@ -309,7 +307,7 @@
             }
         });
         const form = document.getElementById('query');
-        form.addEventListener('keypress',  async (event) => {
+        form.addEventListener('keypress', async (event) => {
             if (event.key === 'Enter') {
                 event.preventDefault(); // Prevent default form submission behavior
                 try {
@@ -325,7 +323,7 @@
             }
         });
         const gaming = document.getElementById('gaming');
-        gaming.addEventListener('click',  async () => {
+        gaming.addEventListener('click', async () => {
             event.preventDefault(); // Prevent default form submission behavior
             try {
                 const apiUrl = "http://127.0.0.1:8069/api/video"
@@ -339,7 +337,7 @@
             }
         });
         const music = document.getElementById('music');
-        music.addEventListener('click',  async () => {
+        music.addEventListener('click', async () => {
             event.preventDefault(); // Prevent default form submission behavior
             try {
                 const apiUrl = "http://127.0.0.1:8069/api/video"
@@ -353,7 +351,7 @@
             }
         });
         const sports = document.getElementById('sports');
-        sports.addEventListener('click',  async () => {
+        sports.addEventListener('click', async () => {
             event.preventDefault(); // Prevent default form submission behavior
             try {
                 const apiUrl = "http://127.0.0.1:8069/api/video"
@@ -367,7 +365,7 @@
             }
         });
         const edu = document.getElementById('edu');
-        edu.addEventListener('click',  async () => {
+        edu.addEventListener('click', async () => {
             event.preventDefault(); // Prevent default form submission behavior
             try {
                 const apiUrl = "http://127.0.0.1:8069/api/video"
