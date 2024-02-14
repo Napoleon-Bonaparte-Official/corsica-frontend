@@ -213,6 +213,14 @@
             <input type="file" id="thumbnailField" name="thumbnail"><br>
             <label for="thumbnailField" class="custom-file-label">Select Video</label><br>
             <input type="file" id="videoField" name="video"><br>
+            <label for="genre">Choose a genre:</label>
+            <select id="genre" name="genre">
+                <option value="none">None</option>
+                <option value="gaming">Gaming</option>
+                <option value="sports">Sports</option>
+                <option value="music">Music</option>
+                <option value="educational">Educational</option>
+            </select><br><br>
             <!-- <label for="thumbnailField" class="custom-file-label">Select Thumbnail</label><br> -->
 
 
@@ -281,17 +289,16 @@
             var form = document.getElementById('myForm');
             var video = null;
             var thumb_name = thumb.files[0].name
-            console.log(thumb_name)
-            console.log(uid)
+            var genre = document.getElementById("genre").value
             if (uid == null) {
                 console.log("LOG IN PRIOR TO UPLOAD")
                 return "SIGN IN"
             }
 
             formData.append('video', vid.files[0]);
-            console.log(vid.files[0])
             try {
                 const apiUrl = "http://127.0.0.1:8069/api/video/"
+                console.log(genre.value2)
                 var formData = new FormData(form);
                 video = (vid.files[0]).name;
                 convertImageToBase64(thumb)
@@ -305,7 +312,7 @@
                                 'Access-Control-Allow-Methods': 'POST,PATCH,OPTIONS',
                                 'Access-Control-Allow-Origin': 'http://127.0.0.1:4100/'
                             },
-                            body: JSON.stringify({ name: name, description: description, thumbnail: thumb_name, base64: base64String, video: video, uid: uid }) // convert payload to JSON
+                            body: JSON.stringify({ name: name, description: description, thumbnail: thumb_name, base64: base64String, video: video, uid: uid, genre:genre }) // convert payload to JSON
                         })
                         // Do something with the base64String, such as sending it to a server or displaying it
                     })
