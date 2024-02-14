@@ -75,6 +75,7 @@
 
         /* wasnt sure how to apply styling so added it to the id */
         #video {
+            margin-top: 20px;
             border-radius: 10px;
             border: 1px solid rgba(58, 58, 60, 0.3);
             transition: all 0.2s ease-in-out;
@@ -143,12 +144,18 @@
 </head>
 
 <body>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+
     <header>
         <a href="/corsica-frontend/" class="inputField" type="button">Home</a>
         <input type="text" id="query" class="inputField" placeholder="Search">
         <a href="/corsica-frontend/upload" class="inputField" type="button">Upload</a>
         <a href="/corsica-frontend/login" class="inputField" type="button">Login</a>
     </header>
+
+    <hr>
 
     <div class="grid">
         <!-- video player & vid details -->
