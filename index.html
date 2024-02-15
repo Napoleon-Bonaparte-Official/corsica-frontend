@@ -153,10 +153,11 @@
         function renderVideos(videos, query = "", genre = "") {
             const videoGrid = document.querySelector('.videoGrid');
             const qlist = query.split(" ")
-            if (genre != "") {
-                console.log("genre")
-                console.log(genre);
+                if (genre != "") {
                 videos.forEach(video => {
+                    if(video['genre'] == null){
+                        return
+                    }
                     if (video['genre'].toLowerCase() == genre) {
                         const videoItem = document.createElement('div');
                         videoItem.classList.add('grid-item');
