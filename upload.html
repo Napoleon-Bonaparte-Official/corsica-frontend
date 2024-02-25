@@ -325,6 +325,9 @@
                 fetch(apiUrl, {
                     method: 'POST',
                     credentials: 'include',
+                    headers: {
+                        'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
+                    },
                     body: formData
                 })
                     .catch(error => {

@@ -267,7 +267,8 @@
                         method: 'DELETE',
                         credentials: 'include',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
                         },
                         body: JSON.stringify({ uid }) //JSON data
                     });
@@ -307,7 +308,8 @@
                         method: 'POST',
                         credentials: 'include',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
                         },
                         body: JSON.stringify({ uid, email }) //JSON data
                     });
