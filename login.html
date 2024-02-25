@@ -318,7 +318,8 @@
                     method: 'POST',
                     headers: {
                         'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Credentials': 'true'
                     },
                     body: JSON.stringify({ uid, password }) // convert payload to JSON
                 });
