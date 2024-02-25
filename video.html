@@ -190,11 +190,7 @@
             var index = -1;
             return fetch(apiUrl, {
                 mode: "cors",
-                credentials: 'include',
-                headers: {
-                    'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io',
-                    'Access-Control-Allow-Credentials': 'true'
-                }
+                credentials: 'include'
             })
                 .then(response => {
                     if (response.status === 403) {

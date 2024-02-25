@@ -308,10 +308,7 @@
                             method: 'POST',
                             credentials: 'include',
                             headers: {
-                                'Content-Type': 'application/json',
-                                'Access-Control-Allow-Methods': 'POST,PATCH,OPTIONS',
-                                'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io/',
-                                'Access-Control-Allow-Credentials': 'true'
+                                'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({ name: name, description: description, thumbnail: thumb_name, base64: base64String, video: video, uid: uid, genre:genre }) // convert payload to JSON
                         })
@@ -326,10 +323,6 @@
                 fetch(apiUrl, {
                     method: 'POST',
                     credentials: 'include',
-                    headers: {
-                        'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
                     body: formData
                 })
                     .catch(error => {

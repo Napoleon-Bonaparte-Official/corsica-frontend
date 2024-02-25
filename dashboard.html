@@ -268,8 +268,6 @@
                         credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io',
-                            'Access-Control-Allow-Credentials': 'true'
                         },
                         body: JSON.stringify({ uid }) //JSON data
                     });
@@ -309,9 +307,7 @@
                         method: 'POST',
                         credentials: 'include',
                         headers: {
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io',
-                            'Access-Control-Allow-Credentials': 'true'
+                            'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({ uid, email }) //JSON data
                     });
