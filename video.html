@@ -188,10 +188,7 @@
             const apiUrl = new URL(url) + params.get("videoID");
             console.log()
             var index = -1;
-            return fetch(apiUrl, {
-                mode: "cors",
-                credentials: 'include'
-            })
+            return fetch(apiUrl)
                 .then(response => {
                     if (response.status === 403) {
                         window.location.href = '403.html'; // Redirect to 403 page
