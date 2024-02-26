@@ -197,10 +197,12 @@
 
                     // post request to backend
                     const deleteAccount = await fetch(apiUrl, {
+                        mode: 'cors',
                         method: 'DELETE',
                         credentials: 'include',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
                         },
                         body: JSON.stringify({ uid }) //JSON data
                     });
@@ -219,10 +221,12 @@
 
                     // post request to backend
                     const changeEmail = await fetch(apiUrl, {
+                        mode: 'cors',
                         method: 'POST',
                         credentials: 'include',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
                         },
                         body: JSON.stringify({ uid, email }) //JSON data
                     });
@@ -244,7 +248,10 @@
         function fetchData(url) {
             return fetch(url, {
                 mode: "cors",
-                credentials: 'include'
+                credentials: 'include',
+                headers: {
+                    'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
+                }
             })
                 .then(response => {
                     if (response.status === 403) {

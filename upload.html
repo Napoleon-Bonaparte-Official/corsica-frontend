@@ -305,10 +305,12 @@
                     .then(base64String => {
                         const base64 = "data:image/png;base64," + base64String;
                         fetch(apiUrl, {
+                            mode: 'cors',
                             method: 'POST',
                             credentials: 'include',
                             headers: {
-                                'Content-Type': 'application/json'
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
                             },
                             body: JSON.stringify({ name: name, description: description, thumbnail: thumb_name, base64: base64String, video: video, uid: uid, genre:genre }) // convert payload to JSON
                         })
@@ -321,8 +323,12 @@
 
                 //upload video
                 fetch(apiUrl, {
+                    mode: 'cors',
                     method: 'POST',
                     credentials: 'include',
+                    headers: {
+                        'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
+                    },
                     body: formData
                 })
                     .catch(error => {
