@@ -202,7 +202,7 @@
                         credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
+                            // 'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
                         },
                         body: JSON.stringify({ uid }) //JSON data
                     });
@@ -226,7 +226,7 @@
                         credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
+                            // 'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
                         },
                         body: JSON.stringify({ uid, email }) //JSON data
                     });
@@ -249,9 +249,9 @@
             return fetch(url, {
                 mode: "cors",
                 credentials: 'include',
-                headers: {
-                    'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
-                }
+                // headers: {
+                //     'Access-Control-Allow-Origin': 'https://napoleon-bonaparte-official.github.io'
+                // }
             })
                 .then(response => {
                     if (response.status === 403) {
