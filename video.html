@@ -345,7 +345,7 @@
                 const apiUrl = "https://corsica-backend.stu.nighthawkcodingsociety.com/api/video"
                 const response = await fetch(apiUrl);
                 const videos = await response.json();
-                formatComments(sampleVideo)
+                //formatComments(sampleVideo)
                 renderVideos(videos);
             } catch (error) {
                 console.error('Error loading videos:', error);
