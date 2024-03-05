@@ -193,7 +193,7 @@
                 console.log(uid);
                 event.preventDefault();
                 try {
-                    const apiUrl = "https://corsica-backend.stu.nighthawkcodingsociety.com/api/users/update"
+                    const apiUrl = "http://127.0.0.1:8069/api/users/update"
 
                     // post request to backend
                     const deleteAccount = await fetch(apiUrl, {
@@ -214,7 +214,7 @@
             changeEmail.addEventListener('click', async function (event) {
                 event.preventDefault();
                 try {
-                    const apiUrl = "https://corsica-backend.stu.nighthawkcodingsociety.com/api/users/update"
+                    const apiUrl = "http://127.0.0.1:8069/api/users/update"
                     const email = document.getElementById('emailField').value; // the new email to change 
                     const uid = document.getElementById('uidEmailField').value; // the uid to make the change
 
@@ -300,7 +300,7 @@
         }
 
         // URL to fetch JSON data from
-        const apiUrl = 'https://corsica-backend.stu.nighthawkcodingsociety.com/api/users';
+        const apiUrl = 'http://127.0.0.1:8069/api/users';
 
         // Call fetchData function with the API URL
         fetchData(apiUrl);
