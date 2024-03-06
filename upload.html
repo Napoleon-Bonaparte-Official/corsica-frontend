@@ -310,7 +310,8 @@
                             credentials: 'include',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'Access-Control-Allow-Origin': 'http://127.0.0.1:4100'
+                                'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
+                                'Access-Control-Allow-Credentials': 'true'
                             },
                             body: JSON.stringify({ name: name, description: description, thumbnail: thumb_name, base64: base64String, video: video, uid: uid, genre:genre }) // convert payload to JSON
                         })
@@ -326,8 +327,10 @@
                     mode: 'cors',
                     method: 'POST',
                     credentials: 'include',
-                    headers: {'Access-Control-Allow-Origin': 'http://127.0.0.1:4100'},
-                    body: formData
+                    headers: {
+                        'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
+                        'Access-Control-Allow-Credentials': 'true'},
+                        body: formData
                 })
                     .catch(error => {
                         // Handle any errors

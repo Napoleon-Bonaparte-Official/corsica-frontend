@@ -144,51 +144,54 @@
 </head>
 
 <body>
-    <body>
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-    
-        <header>
-            <a href="/corsica-frontend/" class="inputField" type="button">Home</a>
-            <input type="text" id="query" class="inputField" placeholder="Search">
-            <a href="/corsica-frontend/upload" class="inputField" type="button">Upload</a>
-            <a href="/corsica-frontend/login" class="inputField" type="button">Login</a>
-        </header>
-    
-        <hr>
-    
-        <div class="grid">
-            <!-- video player & vid details -->
-            <div id="container" type="details">
-                <!-- vid -->
-                <video id="video" height="900vh" width="100%" controls>
-                    <source src="" type="video/mp4">
-                </video>
-    
-                <!-- details -->
-                <div id="desc">
-                    <div id="title">TITLE</div>
-                    <div id="creator">CREATOR</div>
-                    <div id="views">VIEWS</div>
-                    <div id="desc-box">
-                        <div id="description">DESCRIPTION</div>
-                    </div>
-                </div>
-    
-                <div id="comments"></div>
-            </div>
-    
-            <!-- the recommended videos on the sid -->
-            <div id="container" type="recommended" class="videoGrid"></div>
-        </div>    
-    <script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
+
+    <header>
+        <a href="/corsica-frontend/" class="inputField" type="button">Home</a>
+        <input type="text" id="query" class="inputField" placeholder="Search">
+        <a href="/corsica-frontend/upload" class="inputField" type="button">Upload</a>
+        <a href="/corsica-frontend/login" class="inputField" type="button">Login</a>
+    </header>
+
+    <hr>
+
+    <div class="grid">
+        <!-- video player & vid details -->
+        <div id="container" type="details">
+            <!-- vid -->
+            <video id="video" height="900vh" width="100%" controls>
+                <source src="" type="video/mp4">
+            </video>
+
+            <!-- details -->
+            <div id="desc">
+                <div id="title">TITLE</div>
+                <div id="creator">CREATOR</div>
+                <div id="views">VIEWS</div>
+                <div id="desc-box">
+                    <div id="description">DESCRIPTION</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- the recommended videos on the sid -->
+        <div id="container" type="recommended" class="videoGrid"></div>
+    </div>
+
+    <script>
+        // Function to send a GET request to the URL
         function fetchVideo(url, objectId) {
             const params = new URLSearchParams(window.location.search);
             const apiUrl = new URL(url) + params.get("videoID");
             console.log()
             var index = -1;
-            return fetch(apiUrl)
+            return fetch(apiUrl, {
+                mode: "cors",
+                credentials: 'include'
+            })
                 .then(response => {
                     if (response.status === 403) {
                         window.location.href = '403.html'; // Redirect to 403 page
@@ -235,8 +238,7 @@
             source.src = data["video"];
             video.load();
             try {
-                //const url = "http://127.0.0.1:8069/api/video/"
-                const url = "http://127.0.0.1:8069/api/video";
+                const url = "http://127.0.0.1:8069/api/video/"
                 fetch(url, {
                     method: 'PUT',
                     headers: {
@@ -262,39 +264,6 @@
         const objectId = '1'; // Replace 'your_object_id_here' with the actual object ID
         fetchVideo(apiUrl, objectId);
 
-
-        const sampleVideo = {
-            videoID: "123456789",
-            name: "Sample Video",
-            description: "This is a sample video description.",
-            userID: "user123",
-            views: 1000,
-            video: "https://example.com/sample_video.mp4",
-            comments: {
-                "user1": ["Great video!", "Nice job!"],
-                "user2": ["Awesome content", "I learned a lot from this video."],
-                "user3": ["Keep up the good work!"]
-            }
-        };
-
-        function formatComments(video) {
-            const commentsGrid = document.getElementById("comments"); // Check if this element exists
-            for (const user in video.comments) {
-                const userComments = video.comments[user];
-                const userDiv = document.createElement('div');
-                userDiv.classList.add('comment-user');
-                userDiv.innerHTML = `<strong>${user}</strong>`; // Wrapping user in <strong> tag
-                commentsGrid.appendChild(userDiv); // Check if commentsGrid is null
-                for (const comment of userComments) {
-                    const commentDiv = document.createElement('div');
-                    commentDiv.classList.add('comment-text');
-                    commentDiv.textContent = " - " + comment;
-                    commentsGrid.appendChild(commentDiv); // Check if commentsGrid is null
-                }
-            }
-        }
-        
-        
         // thumbnail link thing
         function renderVideos(videos) {
             const videoGrid = document.querySelector('.videoGrid');
@@ -323,7 +292,7 @@
                 viewCount.classList.add('view-count'); // Add a class for styling
 
                 const lineBreak = document.createElement('br');
-                formatComments(video);
+
                 // Append the videoLink to the videoItem
                 videoItem.appendChild(videoLink);
 
@@ -340,13 +309,15 @@
             });
         }
 
+
+
+
         // Load videos when the page is loaded
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const apiUrl = "http://127.0.0.1:8069/api/video"
                 const response = await fetch(apiUrl);
                 const videos = await response.json();
-                //formatComments(sampleVideo)
                 renderVideos(videos);
             } catch (error) {
                 console.error('Error loading videos:', error);

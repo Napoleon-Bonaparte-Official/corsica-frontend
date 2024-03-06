@@ -268,8 +268,11 @@
                         mode: 'cors',
                         method: 'DELETE',
                         credentials: 'include',
+                        
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
+                            'Access-Control-Allow-Credentials': 'true'
                         },
                         body: JSON.stringify({ uid }) //JSON data
                     });
@@ -311,7 +314,9 @@
                         method: 'POST',
                         credentials: 'include',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
+                            'Access-Control-Allow-Credentials': 'true'
                         },
                         body: JSON.stringify({ uid, email }) //JSON data
                     });
