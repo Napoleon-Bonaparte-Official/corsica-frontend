@@ -1,4 +1,4 @@
-# [Open Frontend](https://napoleon-bonaparte-official.github.io/corsica-frontend/)
+# [Open Frontend](http://127.0.0.1:4100/corsica-frontend/)
 
 # IMPORTANT
 
