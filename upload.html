@@ -247,8 +247,12 @@
             document.getElementById('myForm').reset();
         });
         // 200 success
-        function sucess() {
-            console.log("UPLOAD SUCCESS")
+        function success(uploadSuccessful) {
+            const messageElement = document.createElement('p');
+            messageElement.textContent = uploadSuccessful ? 'Upload successful!' : 'Upload failed. Please try again.';
+            messageElement.style.color = uploadSuccessful ? 'green' : 'red';
+            document.body.appendChild(messageElement);
+            // Optionally, you can reset the form or do other actions here
         }
 
         // Assuming you have an input element with id="imageInput" where users can select an image file
@@ -339,6 +343,7 @@
                 if (!uploadResponse.ok) {
                     throw new Error('Upload request was not successful');
                 }
+                success(true)
             }
             catch {
                 console.log("TRY FAILED")

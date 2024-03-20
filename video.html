@@ -140,6 +140,33 @@
             height: 30vh;
             margin-bottom: 10px;
         }
+
+        .description {
+            margin-top: 20px;
+        }
+        
+        .like-dislike {
+            margin-top: 10px;
+        }
+        
+        .like-btn, .dislike-btn {
+            padding: 5px 10px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .like-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        
+        .dislike-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+        
     </style>
 </head>
 
@@ -173,6 +200,13 @@
                 <div id="desc-box">
                     <div id="description">DESCRIPTION</div>
                 </div>
+                <div class="like-dislike">
+                    <button id="like" class="like-btn">Like</button>
+                    <button id="dislike" class="dislike-btn">Dislike</button>
+                </div>
+                <div id="like-count">Likes:&nbsp;</div>
+                <div id="dislike-count">Dislikes:&nbsp;</div>
+                
             </div>
 
         </div>
@@ -186,7 +220,7 @@
         function fetchVideo(url, objectId) {
             const params = new URLSearchParams(window.location.search);
             const apiUrl = new URL(url) + params.get("videoID");
-            console.log()
+            console.log(apiUrl)
             var index = -1;
             return fetch(apiUrl, {
                 mode: "cors",
@@ -215,6 +249,7 @@
                 });
         }
 
+
         // Function to format JSON data into a table
         function formatVideo(data, index) {
 
@@ -229,6 +264,8 @@
             var video = document.getElementById('video')
             var views = document.getElementById("views");
             var source = video.querySelector('source');
+            var likes = document.getElementById("like-count")
+            var dislikes = document.getElementById("dislike-count")
 
             videoID = data['videoID'];
             title.innerText = data["name"];
@@ -236,6 +273,8 @@
             creator.innerText = data["userID"];
             views.innerText = data["views"] + " views";
             source.src = data["video"];
+            likes.innerText += data['likes'];
+            dislikes.innerText += data['dislikes']
             video.load();
             try {
                 const url = "http://127.0.0.1:8069/api/video/"
@@ -244,7 +283,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ videoID: videoID }) //JSON data
+                    body: JSON.stringify({ type: 0, videoID: videoID }) //JSON data
                 })
             } catch (error) {
                 console.error('Error:', error);
@@ -270,7 +309,7 @@
 
             videos.forEach(video => {
                 const videoItem = document.createElement('div');
-                videoItem.classList.add('grid-item');
+                videoItem.classList.add('grid-item');                   
                 videoItem.classList.add('video-item');
 
                 const videoLink = document.createElement('a');
@@ -309,8 +348,39 @@
             });
         }
 
+        const like = document.getElementById('like');
+        like.addEventListener('click', async () => {
+            event.preventDefault(); // Prevent default form submission behavior
+            try {
+                const url = "http://127.0.0.1:8069/api/video/"
+                fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ type: 1, videoID: videoID }) //JSON data
+                })
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
 
-
+        const dislike = document.getElementById('dislike');
+        dislike.addEventListener('click', async () => {
+            event.preventDefault(); // Prevent default form submission behavior
+            try {
+                const url = "http://127.0.0.1:8069/api/video/"
+                fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ type: 2, videoID: videoID }) //JSON data
+                })
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
 
         // Load videos when the page is loaded
         document.addEventListener('DOMContentLoaded', async () => {

@@ -209,7 +209,14 @@
             <input type="text" id="usernameField" name="username" placeholder="Username"><br>
             <input type="text" id="emailField" name="email" placeholder="Email"><br>
             <input type="password" id="passwordField" name="password" placeholder="Password"><br>
-
+            <label for="preferences" style="color:#fff">Choose Preferences:</label>
+            <select id="preferences" name="preferences">
+                <option value="none">None</option>
+                <option value="gaming">Gaming</option>
+                <option value="sports">Sports</option>
+                <option value="music">Music</option>
+                <option value="educational">Educational</option>
+            </select><br>
 
             <!-- submit button -->
             <input type="hidden" id="csrfTokenField" name="csrf_token" value="">
@@ -257,7 +264,7 @@
             const uid = document.getElementById('usernameField').value; // username
             const email = document.getElementById('emailField').value; // email
             const password = document.getElementById('passwordField').value; // password
-
+            const preferences = document.getElementById("preferences").value
             var form = document.getElementById('myForm');
 
             try {
@@ -278,7 +285,7 @@
                         'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
                         'Access-Control-Allow-Credentials': 'true'
                     },
-                    body: JSON.stringify({ name, uid, password, dob, email }) // convert payload to JSON
+                    body: JSON.stringify({ name, uid, password, dob, email, preferences }) // convert payload to JSON
                 })
 
                 // error occured and login didn't work
