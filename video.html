@@ -197,6 +197,7 @@
                 <div id="title">TITLE</div>
                 <div id="creator">CREATOR</div>
                 <div id="views">VIEWS</div>
+                <div id="genre">GENRE: &nbsp;</div>
                 <div id="desc-box">
                     <div id="description">DESCRIPTION</div>
                 </div>
@@ -266,6 +267,7 @@
             var source = video.querySelector('source');
             var likes = document.getElementById("like-count")
             var dislikes = document.getElementById("dislike-count")
+            var genre = document.getElementById("genre")
 
             videoID = data['videoID'];
             title.innerText = data["name"];
@@ -275,6 +277,8 @@
             source.src = data["video"];
             likes.innerText += data['likes'];
             dislikes.innerText += data['dislikes']
+            genre.innerText += data["genre"]
+
             video.load();
             try {
                 const url = "http://127.0.0.1:8069/api/video/"
