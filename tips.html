@@ -76,6 +76,11 @@ button:hover {
 
 <div class="container">
   <form id="predictionForm">
+    <label for="type">Choose Type:</label>
+    <select id="type" name="type" required>
+      <option value="yeongsu">Yeongsu</option>
+      <option value="will">Will</option>
+    </select>
     <label for="total_bill">Total Bill:</label>
     <input type="number" id="total_bill" name="total_bill" step="0.01" required>
 
@@ -130,26 +135,48 @@ function predictBill() {
     time: document.getElementById("time").value,
     size: parseInt(document.getElementById("size").value)
   };
-  const apiUrl = "http://127.0.0.1:8086/api/tips/predict"; // Change the API endpoint URL accordingly
+  const apiUrl = "http://127.0.0.1:8069/api/tips/predict"; // Change the API endpoint URL accordingly
   // Send input data to server for prediction
-  fetch(apiUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
-      'Access-Control-Allow-Credentials': 'true'
-    },
-    body: JSON.stringify(formData)
-  })
-  .then(response => response.json())
-  .then(data => {
-    // Display prediction result
-    document.getElementById("result").innerHTML = "Predicted bill: $" + data.predicted_bill.toFixed(2);
-  })
-  .catch(error => {
-    console.error("Error:", error);
-    document.getElementById("result").innerHTML = "An error occurred. Please try again.";
-  });
+  if(document.getElementById("type").value === "yeongsu"){
+    fetch(apiUrl+"1", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
+        'Access-Control-Allow-Credentials': 'true'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Display prediction result
+      document.getElementById("result").innerHTML = "Predicted bill: $" + data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      document.getElementById("result").innerHTML = "An error occurred. Please try again.";
+    });
+  }
+  else{
+    fetch(apiUrl+"2", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
+        'Access-Control-Allow-Credentials': 'true'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Display prediction result
+      document.getElementById("result").innerHTML = "Predicted bill: $" + data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      document.getElementById("result").innerHTML = "An error occurred. Please try again.";
+    });
+  }
 }
 </script>
 
