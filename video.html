@@ -207,7 +207,8 @@
                 </div>
                 <div id="like-count">Likes:&nbsp;</div>
                 <div id="dislike-count">Dislikes:&nbsp;</div>
-                
+                <div>COMMENTS:</div>
+                <div id="comments"></div>
             </div>
 
         </div>
@@ -217,6 +218,46 @@
     </div>
 
     <script>
+        function fetchComments(){
+            const url = "http://127.0.0.1:8069/api/comment/" + videoID
+            //document.getElementById("comments").innerHTML = url
+            fetch(url, {
+                type:"GET", 
+                mode: "cors",
+                credentials: 'include'
+            })
+            .then(response => {
+                if (response.status === 403) {
+                    window.location.href = '403.html'; // Redirect to 403 page
+                    throw new Error('Forbidden'); // Throw an error to stop further execution
+                }
+                else if (response.status === 401) {
+                    window.location.href = '401.html'; // Redirect to 403 page
+                    throw new Error('Forbidden'); // Throw an error to stop further execution
+                }
+                else {
+                    return response.json(); // Proceed with normal data processing
+                }
+            })
+            .then(data => {
+                // Call function to format data into a table
+                console.log(data)
+                formatComments(data);
+            })
+            .catch(error => {
+                // Handle other errors
+                console.error('Error fetching data:', error);
+            });
+        }
+
+        function formatComments(comments){
+            block = document.getElementById("comments");
+            comments.forEach(comment => {
+                block.innerHTML += "<br>" + "<b>" + comment["user"] + "</b>: " + comment["comment"] + "<br>";
+            })
+            
+        }
+
         // Function to send a GET request to the URL
         function fetchVideo(url, objectId) {
             const params = new URLSearchParams(window.location.search);
@@ -242,6 +283,7 @@
                 })
                 .then(data => {
                     // Call function to format data into a table
+                    console.log(data)
                     formatVideo(data, index);
                 })
                 .catch(error => {
@@ -393,6 +435,7 @@
                 const response = await fetch(apiUrl);
                 const videos = await response.json();
                 renderVideos(videos);
+                fetchComments()
             } catch (error) {
                 console.error('Error loading videos:', error);
             }
