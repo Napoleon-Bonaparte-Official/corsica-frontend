@@ -209,6 +209,11 @@
                 <div id="dislike-count">Dislikes:&nbsp;</div>
                 <div>COMMENTS:</div>
                 <div id="comments"></div>
+                <br>
+                <div class="post-comment">
+                    <textarea id="new-comment" placeholder="Write a comment..." rows="4" cols="50"></textarea>
+                    <button id="post-comment" class="like-btn">Post Comment</button>
+                </div>
             </div>
 
         </div>
@@ -335,7 +340,47 @@
                 console.error('Error:', error);
             }
         }
-
+        
+        function uploadComment() {
+            const comment = document.getElementById('new-comment').value;
+            if (comment.trim() === '') {
+                alert('Comment cannot be empty.');
+                return;
+            }
+            const uid = localStorage.getItem('uid');
+            const apiUrl = "http://127.0.0.1:8069/api/comment/";
+        
+            fetch(apiUrl, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                body: JSON.stringify({ comment, videoID, uid })
+            })
+            .then(response => {
+                if (response.status === 403) {
+                    window.location.href = '403.html';
+                    throw new Error('Forbidden');
+                } else if (response.status === 401) {
+                    window.location.href = '401.html';
+                    throw new Error('Unauthorized');
+                } else if (!response.ok) {
+                    throw new Error('Failed to post comment');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('new-comment').value = '';
+                formatComments([data]);
+            })
+            .catch(error => {
+                console.error('Error posting comment:', error);
+            });
+        }
+        
         // URL to fetch JSON data from
         //formatVideo({
         //    "title": "title",
@@ -440,6 +485,21 @@
                 console.error('Error loading videos:', error);
             }
         });
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const apiUrl = "http://127.0.0.1:8069/api/video";
+                const response = await fetch(apiUrl);
+                const videos = await response.json();
+                renderVideos(videos);
+                fetchComments();
+            } catch (error) {
+                console.error('Error loading videos:', error);
+            }
+        
+            const postCommentButton = document.getElementById('post-comment');
+            postCommentButton.addEventListener('click', uploadComment);
+        });
+        
     </script>
 </body>
 
