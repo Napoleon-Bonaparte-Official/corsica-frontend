@@ -329,12 +329,14 @@
             video.load();
             try {
                 const url = "http://127.0.0.1:8069/api/video/"
+                const uid = localStorage.getItem('uid');
+                console.log("uid: ", uid)
                 fetch(url, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ type: 0, videoID: videoID }) //JSON data
+                    body: JSON.stringify({ type: 0, videoID: videoID, userID: uid}) //JSON data
                 })
             } catch (error) {
                 console.error('Error:', error);
@@ -444,12 +446,13 @@
             event.preventDefault(); // Prevent default form submission behavior
             try {
                 const url = "http://127.0.0.1:8069/api/video/"
+                const uid = localStorage.getItem('uid');
                 fetch(url, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ type: 1, videoID: videoID }) //JSON data
+                    body: JSON.stringify({ type: 1, videoID: videoID, userID: uid}) //JSON data
                 })
             } catch (error) {
                 console.error('Error:', error);
@@ -461,12 +464,13 @@
             event.preventDefault(); // Prevent default form submission behavior
             try {
                 const url = "http://127.0.0.1:8069/api/video/"
+                const uid = localStorage.getItem('uid');
                 fetch(url, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ type: 2, videoID: videoID }) //JSON data
+                    body: JSON.stringify({ type: 2, videoID: videoID, userID: uid }) //JSON data
                 })
             } catch (error) {
                 console.error('Error:', error);
