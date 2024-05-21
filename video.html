@@ -153,6 +153,7 @@
             padding: 5px 10px;
             margin-right: 10px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         
         .like-btn {
@@ -160,11 +161,19 @@
             color: white;
             border: none;
         }
+
+        .like-btn.dark {
+            background-color: #2E7D32;
+        }
         
         .dislike-btn {
             background-color: #f44336;
             color: white;
             border: none;
+        }
+
+        .dislike-btn.dark {
+            background-color: #b71c1c;
         }
         
     </style>
@@ -221,6 +230,21 @@
         <!-- the recommended videos on the sid -->
         <div id="container" type="recommended" class="videoGrid"></div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const likeBtn = document.querySelector('.like-btn');
+            const dislikeBtn = document.querySelector('.dislike-btn');
+    
+            likeBtn.addEventListener('click', () => {
+                likeBtn.classList.toggle('dark');
+            });
+    
+            dislikeBtn.addEventListener('click', () => {
+                dislikeBtn.classList.toggle('dark');
+            });
+        });
+    </script>
 
     <script>
         function fetchComments(){
