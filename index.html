@@ -248,103 +248,59 @@
                 });
             }
             else {
-                if(localStorage.getItem("uid") === null){
-                    console.log("not logged in")
-                    videos.forEach(video => {
-                        const videoItem = document.createElement('div');
-                        videoItem.classList.add('grid-item');
-                        videoItem.classList.add('video-item');
-    
-                        const videoLink = document.createElement('a');
-                        videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video" + "?videoID=" + video["videoID"]; // Assuming video object has a 'video' property for the URL
-    
-                        const videoImage = document.createElement('img');
-                        videoImage.classList.add('video');
-                        var encode = `${video.base64}`;
-                        var step1 = encode.replace(/\\n/g, '');
-                        var step2 = step1.replace(/b'/g, '');
-                        var base64String = step2.replace(/[-:'\\]/g, '');
-                        videoImage.src = `data:image/png;base64,${base64String}`;
-    
-                        const title = document.createElement('span');
-                        title.textContent = video.name; // Assuming video object has a 'name' property for the title
-    
-                        const viewCount = document.createElement('span');
-                        viewCount.textContent = `Views: ${video.views}`; // Assuming video object has a 'views' property
-                        viewCount.classList.add('view-count'); // Add a class for styling
-    
-                        const lineBreak = document.createElement('br');
-    
-                        // Append the videoLink to the videoItem
-                        videoItem.appendChild(videoLink);
-    
-                        // Append the videoImage inside the videoLink
-                        videoLink.appendChild(videoImage);
-    
-                        // Append the title, view count, and line break to the videoItem
-                        videoItem.appendChild(title);
-                        videoItem.appendChild(lineBreak);
-                        videoItem.appendChild(viewCount);
-    
-                        // Append the videoItem to the videoGrid
-                        videoGrid.appendChild(videoItem);
-                    });
-                }
-                else {
-                    console.log("should recommend")
-                    try {
-                        console.log("recommend")
-                        const apiUrl = "http://127.0.0.1:8069/api/video/recommend/" + localStorage.getItem("uid");
-                        fetch(apiUrl)
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Network response was not ok');
-                                }
-                                return response.json();
-                            })
-                            .then(preferences => {
-                                preferences.forEach(video => {
-                                    console.log(preferences)
-                                    const videoItem = document.createElement('div');
-                                    videoItem.classList.add('grid-item');
-                                    videoItem.classList.add('video-item');
-                    
-                                    const videoLink = document.createElement('a');
-                                    videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video" + "?videoID=" + video["videoID"];
-                    
-                                    const videoImage = document.createElement('img');
-                                    videoImage.classList.add('video');
-                                    var encode = `${video.base64}`;
-                                    var step1 = encode.replace(/\\n/g, '');
-                                    var step2 = step1.replace(/b'/g, '');
-                                    var base64String = step2.replace(/[-:'\\]/g, '');
-                                    videoImage.src = `data:image/png;base64,${base64String}`;
-                    
-                                    const title = document.createElement('span');
-                                    title.textContent = video.name;
-                    
-                                    const viewCount = document.createElement('span');
-                                    viewCount.textContent = `Views: ${video.views}`;
-                                    viewCount.classList.add('view-count');
-                    
-                                    const lineBreak = document.createElement('br');
-                    
-                                    videoItem.appendChild(videoLink);
-                                    videoLink.appendChild(videoImage);
-                                    videoItem.appendChild(title);
-                                    videoItem.appendChild(lineBreak);
-                                    videoItem.appendChild(viewCount);
-                    
-                                    videoGrid.appendChild(videoItem);
-                                });
-                            })
-                            .catch(error => {
-                                console.error('Error loading preferred videos:', error);
+                console.log("should recommend or no uid")
+                try {
+                    console.log("recommend")
+                    const apiUrl = "http://127.0.0.1:8069/api/video/recommend/" + String(localStorage.getItem("uid"));
+                    fetch(apiUrl)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(preferences => {
+                            preferences.forEach(video => {
+                                console.log(preferences)
+                                const videoItem = document.createElement('div');
+                                videoItem.classList.add('grid-item');
+                                videoItem.classList.add('video-item');
+                
+                                const videoLink = document.createElement('a');
+                                videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video" + "?videoID=" + video["videoID"];
+                
+                                const videoImage = document.createElement('img');
+                                videoImage.classList.add('video');
+                                var encode = `${video.base64}`;
+                                var step1 = encode.replace(/\\n/g, '');
+                                var step2 = step1.replace(/b'/g, '');
+                                var base64String = step2.replace(/[-:'\\]/g, '');
+                                videoImage.src = `data:image/png;base64,${base64String}`;
+                
+                                const title = document.createElement('span');
+                                title.textContent = video.name;
+                
+                                const viewCount = document.createElement('span');
+                                viewCount.textContent = `Views: ${video.views}`;
+                                viewCount.classList.add('view-count');
+                
+                                const lineBreak = document.createElement('br');
+                
+                                videoItem.appendChild(videoLink);
+                                videoLink.appendChild(videoImage);
+                                videoItem.appendChild(title);
+                                videoItem.appendChild(lineBreak);
+                                videoItem.appendChild(viewCount);
+                
+                                videoGrid.appendChild(videoItem);
                             });
-                    } catch (error) {
-                        console.error('Error loading preferred videos:', error);
-                    }                    
-                }
+                        })
+                        .catch(error => {
+                            console.error('Error loading preferred videos:', error);
+                        });
+                } catch (error) {
+                    console.error('Error loading preferred videos:', error);
+                }                    
             }
 
         }
