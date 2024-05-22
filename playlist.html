@@ -148,9 +148,10 @@
             console.log(genre)
             const videoGrid = document.querySelector('.videoGrid');
             const qlist = query.split(" ")
-            if (genre != "") {
+            if (genre == "likes") {
                 videos.forEach(video => {
-                    if(!video['_accountViewsLikesDislikes']["likes"].includes(String(localStorage.getItem("uid")))){
+                    console.log(video)
+                    if(!video['accountViewsLikesDislikes']["likes"].includes(String(localStorage.getItem("uid")))){
                         return
                     }
                     else{
@@ -244,9 +245,9 @@
                 });
             }
             else {
-                console.log("should recommend or no uid")
+                console.log("selected playlist other than likes")
                 try {
-                    console.log("recommend")
+                    console.log("playlist")
                     const apiUrl = "http://127.0.0.1:8069/api/video/recommend/" + String(localStorage.getItem("uid"));
                     fetch(apiUrl)
                         .then(response => {
@@ -326,6 +327,7 @@
                 const response = await fetch(apiUrl);
                 const videos = await response.json();
                 clearVideos()
+                console.log(videos)
                 renderVideos(videos, "", "likes");
             } catch (error) {
                 console.error('Error loading videos:', error);
