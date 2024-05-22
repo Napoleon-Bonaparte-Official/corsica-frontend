@@ -1,0 +1,324 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload</title>
+    <style>
+        body {
+            background: linear-gradient(45deg, #000000, #2c2c2e);
+            height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .container {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+        }
+
+        .error {
+            background: rgba(58, 58, 60, 0.3);
+            padding: 3em;
+            height: auto;
+            border-radius: 20px;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        form {
+            background: rgba(58, 58, 60, 0.3);
+            padding: 3em;
+            height: auto;
+            border-radius: 20px;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                margin: 4px;
+            }
+        }
+
+        p {
+            font-weight: 500;
+            color: #fff;
+            opacity: 0.7;
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 60px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        a {
+            text-decoration: none;
+            color: #ddd;
+            font-size: 12px;
+
+            &:hover {
+                text-shadow: 2px 2px 6px #00000040;
+            }
+
+            &:active {
+                text-shadow: none;
+            }
+        }
+
+        input {
+            background: transparent;
+            width: 200px;
+            padding: 1em;
+            margin-bottom: 2em;
+            border: none;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            border-radius: 5000px;
+            backdrop-filter: blur(5px);
+            box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+            color: #fff;
+            font-family: Montserrat, sans-serif;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+                box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            &[type="email"],
+            &[type="password"] {
+
+                &:focus {
+                    background: rgba(255, 255, 255, 0.1);
+                    box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+                }
+            }
+
+            &[type="button"] {
+                margin-top: 10px;
+                width: 150px;
+                font-size: 1rem;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &:active {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+            }
+        }
+
+        ::placeholder {
+            font-family: Montserrat, sans-serif;
+            font-weight: 400;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .drop {
+            background: rgba(58, 58, 60, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            border-left: 1px solid rgba(58, 58, 60, 0.3);
+            border-top: 1px solid rgba(58, 58, 60, 0.3);
+            box-shadow: 10px 10px 60px -8px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            transition: all 0.2s ease;
+
+        }
+
+        .drop-1 {
+            height: 80px;
+            width: 80px;
+            top: -20px;
+            left: -40px;
+            z-index: -1;
+        }
+
+        .drop-2 {
+            height: 80px;
+            width: 80px;
+            bottom: -30px;
+            right: -10px;
+        }
+
+        .drop-3 {
+            height: 100px;
+            width: 100px;
+            bottom: 120px;
+            right: -50px;
+            z-index: -1;
+        }
+
+        .drop-4 {
+            height: 120px;
+            width: 120px;
+            top: -60px;
+            right: -60px;
+        }
+
+        .drop-5 {
+            height: 60px;
+            width: 60px;
+            bottom: 170px;
+            left: 90px;
+            z-index: -1;
+        }
+
+        label {
+            color: white;
+        }
+
+        a,
+        input:focus,
+        select:focus,
+        textarea:focus,
+        button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <div class="container">
+
+        <!-- login form -->
+        <form method="POST" id="myForm">
+            <p>Create Playlist</p>
+
+            <!-- <label for="thumbnailField" class="custom-file-label">Select Thumbnail</label><br> -->
+            <input type="text" id="nameField" name="name" placeholder="Playlist Name"><br><br><br>
+            <!-- <label for="thumbnailField" class="custom-file-label">Select Thumbnail</label><br> -->
+
+
+            <!-- submit button -->
+            <input type="hidden" id="csrfTokenField" name="csrf_token" value="">
+            <input type="submit" value="Upload Video"><br>
+
+        </form>
+
+        <!-- square things in the background -->
+        <div class="drops">
+            <div class="drop drop-1"></div>
+            <div class="drop drop-2"></div>
+            <div class="drop drop-3"></div>
+            <div class="drop drop-4"></div>
+            <div class="drop drop-5"></div>
+        </div>
+    </div>
+
+
+    <script>
+        window.addEventListener('load', function () {
+            // Reset the form on page load
+            document.getElementById('myForm').reset();
+        });
+        // 200 success
+        function success(uploadSuccessful) {
+            const messageElement = document.createElement('p');
+            messageElement.textContent = uploadSuccessful ? 'Upload successful!' : 'Upload failed. Please try again.';
+            messageElement.style.color = uploadSuccessful ? 'green' : 'red';
+            document.body.appendChild(messageElement);
+            // Optionally, you can reset the form or do other actions here
+        }
+
+        // Assuming you have an input element with id="imageInput" where users can select an image fil
+
+
+
+        async function submitForm() {
+            // get the elements (username, password, etc)
+            const uid = localStorage.getItem("uid")
+            const name = document.getElementById('nameField').value; // full name
+            const description = document.getElementById('descField').value; // date of birth // username
+            const vid = document.getElementById('videoField'); // email
+            var formData = new FormData();
+            var thumb = document.getElementById('thumbnailField');
+            var base64String = "";
+            var form = document.getElementById('myForm');
+            var video = null;
+            var thumb_name = thumb.files[0].name
+            var genre = document.getElementById("genre").value
+            if (uid == null) {
+                console.log("LOG IN PRIOR TO UPLOAD")
+                return "SIGN IN"
+            }
+
+            formData.append('video', vid.files[0]);
+            try {
+                const apiUrl = "http://127.0.0.1:8069/api/video/"
+                console.log(genre.value2)
+                var formData = new FormData(form);
+                video = (vid.files[0]).name;
+                convertImageToBase64(thumb)
+                    .then(base64String => {
+                        const base64 = "data:image/png;base64," + base64String;
+                        fetch(apiUrl, {
+                            mode: 'cors',
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
+                                'Access-Control-Allow-Credentials': 'true'
+                            },
+                            body: JSON.stringify({ name: name, description: description, thumbnail: thumb_name, base64: base64String, video: video, uid: uid, genre:genre }) // convert payload to JSON
+                        })
+                        // Do something with the base64String, such as sending it to a server or displaying it
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                //upload desc, name, and thumbnail
+
+                //upload video
+                fetch(apiUrl, {
+                    mode: 'cors',
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
+                        'Access-Control-Allow-Credentials': 'true'},
+                        body: formData
+                })
+                    .catch(error => {
+                        // Handle any errors
+                        console.error('Error uploading video:', error);
+                    });
+                if (!uploadResponse.ok) {
+                    throw new Error('Upload request was not successful');
+                }
+                success(true)
+            }
+            catch {
+                console.log("TRY FAILED")
+            }
+        }
+        const form = document.getElementById('myForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            submitForm();
+        });
+    </script>
+</body>
+
+</html>
