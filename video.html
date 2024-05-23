@@ -216,10 +216,14 @@
                 </div>
                 <div id="like-count">Likes:&nbsp;</div>
                 <div id="dislike-count">Dislikes:&nbsp;</div>
-                <select onchange="window.location.href=this.value;">
-                    <option value="" selected disabled>Add PlayList</option>
-                </select>
                 <br>
+                <select id="playlistSelect">
+                    <option value="" selected disabled>Add to PlayList</option>
+                    <!-- Other options will be dynamically populated using JavaScript -->
+                </select>
+                <div id="successMessage"></div>
+                <button onclick="handlePlaylistSelection()">Upload to Playlist</button>                              
+                <br><br>
                 <div>COMMENTS:</div>
                 <div id="comments"></div>
                 <br>
@@ -230,67 +234,43 @@
                 <div id="playlist-container"></div> <!-- Container for playlist data -->
                 
                 <script>
-                    document.addEventListener('DOMContentLoaded', (event) => {
-                        const likeBtn = document.querySelector('.like-btn');
-                        const dislikeBtn = document.querySelector('.dislike-btn');
-                
-                        likeBtn.addEventListener('click', () => {
-                            likeBtn.classList.toggle('dark');
-                        });
-                
-                        dislikeBtn.addEventListener('click', () => {
-                            dislikeBtn.classList.toggle('dark');
-                        });
-                
-                        const url = "http://127.0.0.1:8069/api/users/playlist";
+                    // Function to handle playlist change
+                    function handlePlaylistSelection() {
+                        const playlistSelected = document.getElementById("playlistSelect").value
+                        if(playlistSelected === ""){
+                            console.log("select a playlist")
+                            return "select a playlist"
+                        }
+                        console.log(playlistSelected)
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const videoID = urlParams.get('videoID');
+                        const uid = localStorage.getItem("uid")
+                        console.log('videoID:', videoID);
+                        const url = "http://127.0.0.1:8069/api/users/playlist"
                         fetch(url, {
-                            method: "GET", 
-                            mode: "cors",
-                            credentials: 'include'
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
+                                'Access-Control-Allow-Credentials': 'true'
+                            },
+                            body: JSON.stringify({ uid: uid, name: playlistSelected, vidID:videoID }) //JSON data
                         })
                         .then(response => {
                             if (response.status === 403) {
                                 window.location.href = '403.html'; // Redirect to 403 page
                                 throw new Error('Forbidden'); // Throw an error to stop further execution
-                            } else if (response.status === 401) {
-                                window.location.href = '401.html'; // Redirect to 401 page
-                                throw new Error('Unauthorized'); // Throw an error to stop further execution
-                            } else {
+                            }
+                            else if (response.status === 401) {
+                                window.location.href = '401.html'; // Redirect to 403 page
+                                throw new Error('Forbidden'); // Throw an error to stop further execution
+                            }
+                            else {
+                                document.getElementById("successMessage").innerHTML = "ADDITION SUCCESS"
                                 return response.json(); // Proceed with normal data processing
                             }
                         })
-                        .then(data => {
-                            var uid = localStorage.getItem("uid");
-                            console.log(data);
-                            const userPlaylists = data.filter(user => user["uid"] === uid);
-                            userPlaylists.forEach(playlist => renderplaylist(playlist));
-                        });
-                    });
-                
-                    function renderplaylist(playlist) {
-                        const container = document.getElementById('playlist-container');
-                        const playlistDiv = document.createElement('div');
-                        playlistDiv.classList.add('playlist');
-                
-                        Object.entries(playlist).forEach(([key, value]) => {
-                            const itemDiv = document.createElement('div');
-                            itemDiv.classList.add('playlist-item');
-                
-                            const keySpan = document.createElement('span');
-                            keySpan.classList.add('playlist-key');
-                            keySpan.textContent = `${key}: `;
-                
-                            const valueSpan = document.createElement('span');
-                            valueSpan.classList.add('playlist-value');
-                            valueSpan.textContent = value;
-                
-                            itemDiv.appendChild(keySpan);
-                            itemDiv.appendChild(valueSpan);
-                            playlistDiv.appendChild(itemDiv);
-                        });
-                
-                        container.appendChild(playlistDiv);
-                    }
+                    }                          
                 </script>                
 
     <script>
@@ -561,6 +541,59 @@
         
             const postCommentButton = document.getElementById('post-comment');
             postCommentButton.addEventListener('click', uploadComment);
+            const likeBtn = document.querySelector('.like-btn');
+            const dislikeBtn = document.querySelector('.dislike-btn');
+            likeBtn.addEventListener('click', () => {
+                likeBtn.classList.toggle('dark');
+            });
+        
+            dislikeBtn.addEventListener('click', () => {
+                dislikeBtn.classList.toggle('dark');
+            });
+        
+            const url = "http://127.0.0.1:8069/api/users/playlist";
+            fetch(url, {
+                method: "GET", 
+                mode: "cors",
+                credentials: 'include'
+            })
+            .then(response => {
+                if (response.status === 403) {
+                    window.location.href = '403.html'; // Redirect to 403 page
+                    throw new Error('Forbidden'); // Throw an error to stop further execution
+                } else if (response.status === 401) {
+                    window.location.href = '401.html'; // Redirect to 401 page
+                    throw new Error('Unauthorized'); // Throw an error to stop further execution
+                } else {
+                    return response.json(); // Proceed with normal data processing
+                }
+            })
+            .then(data => {
+                const uid = localStorage.getItem("uid");
+                console.log(data);
+                let userPlaylists = {};
+        
+                data.forEach(user => {
+                    if (user["uid"] === uid) {
+                        userPlaylists = user["playlists"];
+                    }
+                });
+        
+                console.log(userPlaylists);
+        
+                const selectElement = document.querySelector('select');
+        
+                // Add options to the select element
+                Object.keys(userPlaylists).forEach(key => {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = key;
+                    selectElement.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching playlists:', error);
+            });
         });
         
     </script>
