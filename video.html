@@ -216,6 +216,10 @@
                 </div>
                 <div id="like-count">Likes:&nbsp;</div>
                 <div id="dislike-count">Dislikes:&nbsp;</div>
+                <select onchange="window.location.href=this.value;">
+                    <option value="" selected disabled>Add PlayList</option>
+                </select>
+                <br>
                 <div>COMMENTS:</div>
                 <div id="comments"></div>
                 <br>
@@ -223,28 +227,71 @@
                     <textarea id="new-comment" placeholder="Write a comment..." rows="4" cols="50"></textarea>
                     <button id="post-comment" class="like-btn">Post Comment</button>
                 </div>
-            </div>
-
-        </div>
-
-        <!-- the recommended videos on the sid -->
-        <div id="container" type="recommended" class="videoGrid"></div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const likeBtn = document.querySelector('.like-btn');
-            const dislikeBtn = document.querySelector('.dislike-btn');
-    
-            likeBtn.addEventListener('click', () => {
-                likeBtn.classList.toggle('dark');
-            });
-    
-            dislikeBtn.addEventListener('click', () => {
-                dislikeBtn.classList.toggle('dark');
-            });
-        });
-    </script>
+                <div id="playlist-container"></div> <!-- Container for playlist data -->
+                
+                <script>
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        const likeBtn = document.querySelector('.like-btn');
+                        const dislikeBtn = document.querySelector('.dislike-btn');
+                
+                        likeBtn.addEventListener('click', () => {
+                            likeBtn.classList.toggle('dark');
+                        });
+                
+                        dislikeBtn.addEventListener('click', () => {
+                            dislikeBtn.classList.toggle('dark');
+                        });
+                
+                        const url = "http://127.0.0.1:8069/api/users/playlist";
+                        fetch(url, {
+                            method: "GET", 
+                            mode: "cors",
+                            credentials: 'include'
+                        })
+                        .then(response => {
+                            if (response.status === 403) {
+                                window.location.href = '403.html'; // Redirect to 403 page
+                                throw new Error('Forbidden'); // Throw an error to stop further execution
+                            } else if (response.status === 401) {
+                                window.location.href = '401.html'; // Redirect to 401 page
+                                throw new Error('Unauthorized'); // Throw an error to stop further execution
+                            } else {
+                                return response.json(); // Proceed with normal data processing
+                            }
+                        })
+                        .then(data => {
+                            var uid = localStorage.getItem("uid");
+                            console.log(data);
+                            const userPlaylists = data.filter(user => user["uid"] === uid);
+                            userPlaylists.forEach(playlist => renderplaylist(playlist));
+                        });
+                    });
+                
+                    function renderplaylist(playlist) {
+                        const container = document.getElementById('playlist-container');
+                        const playlistDiv = document.createElement('div');
+                        playlistDiv.classList.add('playlist');
+                
+                        Object.entries(playlist).forEach(([key, value]) => {
+                            const itemDiv = document.createElement('div');
+                            itemDiv.classList.add('playlist-item');
+                
+                            const keySpan = document.createElement('span');
+                            keySpan.classList.add('playlist-key');
+                            keySpan.textContent = `${key}: `;
+                
+                            const valueSpan = document.createElement('span');
+                            valueSpan.classList.add('playlist-value');
+                            valueSpan.textContent = value;
+                
+                            itemDiv.appendChild(keySpan);
+                            itemDiv.appendChild(valueSpan);
+                            playlistDiv.appendChild(itemDiv);
+                        });
+                
+                        container.appendChild(playlistDiv);
+                    }
+                </script>                
 
     <script>
         function fetchComments(){
