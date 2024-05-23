@@ -232,21 +232,6 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const likeBtn = document.querySelector('.like-btn');
-            const dislikeBtn = document.querySelector('.dislike-btn');
-    
-            likeBtn.addEventListener('click', () => {
-                likeBtn.classList.toggle('dark');
-            });
-    
-            dislikeBtn.addEventListener('click', () => {
-                dislikeBtn.classList.toggle('dark');
-            });
-        });
-    </script>
-
-    <script>
         function fetchComments(){
             const url = "http://127.0.0.1:8069/api/comment/" + videoID
             //document.getElementById("comments").innerHTML = url
@@ -270,7 +255,6 @@
             })
             .then(data => {
                 // Call function to format data into a table
-                console.log(data)
                 formatComments(data);
             })
             .catch(error => {
@@ -312,8 +296,8 @@
                 })
                 .then(data => {
                     // Call function to format data into a table
-                    console.log(data)
                     formatVideo(data, index);
+                    console.log("testing: ", accountViewsLikesDislikes)
                 })
                 .catch(error => {
                     // Handle other errors
@@ -321,7 +305,7 @@
                 });
         }
 
-
+        var flag = 0;
         // Function to format JSON data into a table
         function formatVideo(data, index) {
 
@@ -339,7 +323,8 @@
             var likes = document.getElementById("like-count")
             var dislikes = document.getElementById("dislike-count")
             var genre = document.getElementById("genre")
-
+            const uid = localStorage.getItem('uid');
+            accountViewsLikesDislikes = data['accountViewsLikesDislikes'];
             videoID = data['videoID'];
             title.innerText = data["name"];
             description.innerText = data["description"];
@@ -428,7 +413,6 @@
                 const videoItem = document.createElement('div');
                 videoItem.classList.add('grid-item');                   
                 videoItem.classList.add('video-item');
-
                 const videoLink = document.createElement('a');
                 videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video" + "?videoID=" + video["videoID"]; // Assuming video object has a 'video' property for the URL
 
@@ -502,21 +486,37 @@
         });
 
         document.addEventListener('DOMContentLoaded', async () => {
+            const uid = localStorage.getItem('uid');
             try {
                 const apiUrl = "http://127.0.0.1:8069/api/video";
                 const response = await fetch(apiUrl);
                 const videos = await response.json();
+                console.log(videos)
                 renderVideos(videos);
                 fetchComments();
             } catch (error) {
                 console.error('Error loading videos:', error);
             }
-        
             const postCommentButton = document.getElementById('post-comment');
             postCommentButton.addEventListener('click', uploadComment);
+            var flag_likes = 0;
+            var flag_dislikes = 0;
+            // console.log("response: ", response)
+            const likeBtn = document.querySelector('.like-btn');
+            const dislikeBtn = document.querySelector('.dislike-btn');
+            if (accountViewsLikesDislikes['likes'].includes(uid) === true) {
+                likeBtn.classList.toggle('dark')
+                flag_likes = 1;
+            } 
+
+            if (accountViewsLikesDislikes['dislikes'].includes(uid) === true) {
+                dislikeBtn.classList.toggle('dark')
+                flag_dislikes = 1;
+            } 
+
+
         });
-        
-    </script>
+        </script>
 </body>
 
 </html>
