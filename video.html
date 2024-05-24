@@ -175,7 +175,68 @@
         .dislike-btn.dark {
             background-color: #b71c1c;
         }
-        
+
+        #playlistSelect, button[type="button"] {
+            background-color: #2c2c2e;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        #playlistSelect:hover, #uploadtoplaylist, button[type="button"]:hover {
+            background-color: #3a3a3c;
+        }
+
+        #playlistSelect:focus, button[type="button"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        #playlistSelect {
+            width: 20%;
+            margin-top: 10px;
+        }
+
+        #uploadtoplaylist, button[type="button"] {
+            background-color: #2c2c2e;
+            color: #fff;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+        }
+
+        #successMessage {
+            margin-top: 10px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .post-comment {
+            margin-top: 10px;
+        }
+
+        #new-comment {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #3a3a3c;
+            background-color: #2c2c2e;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.2s ease-in-out;
+        }
+
+        #new-comment:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
     </style>
 </head>
 
@@ -189,6 +250,7 @@
         <input type="text" id="query" class="inputField" placeholder="Search">
         <a href="/corsica-frontend/upload" class="inputField" type="button">Upload</a>
         <a href="/corsica-frontend/login" class="inputField" type="button">Login</a>
+        <a href="/corsica-frontend/playlist" class="inputField" type="button">Playlist</a>
     </header>
 
     <hr>
@@ -216,6 +278,14 @@
                 </div>
                 <div id="like-count">Likes:&nbsp;</div>
                 <div id="dislike-count">Dislikes:&nbsp;</div>
+                <br>
+                <select id="playlistSelect">
+                    <option value="" selected disabled>Add to PlayList</option>
+                    <!-- Other options will be dynamically populated using JavaScript -->
+                </select>
+                <div id="successMessage"></div>
+                <button id="uploadtoplaylist" onclick="handlePlaylistSelection()">Upload to Playlist</button>                              
+                <br><br>
                 <div>COMMENTS:</div>
                 <div id="comments"></div>
                 <br>
@@ -223,13 +293,47 @@
                     <textarea id="new-comment" placeholder="Write a comment..." rows="4" cols="50"></textarea>
                     <button id="post-comment" class="like-btn">Post Comment</button>
                 </div>
-            </div>
-
-        </div>
-
-        <!-- the recommended videos on the sid -->
-        <div id="container" type="recommended" class="videoGrid"></div>
-    </div>
+                <div id="playlist-container"></div> <!-- Container for playlist data -->
+                
+                <script>
+                    // Function to handle playlist change
+                    function handlePlaylistSelection() {
+                        const playlistSelected = document.getElementById("playlistSelect").value
+                        if(playlistSelected === ""){
+                            console.log("select a playlist")
+                            return "select a playlist"
+                        }
+                        console.log(playlistSelected)
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const videoID = urlParams.get('videoID');
+                        const uid = localStorage.getItem("uid")
+                        console.log('videoID:', videoID);
+                        const url = "http://127.0.0.1:8069/api/users/playlist"
+                        fetch(url, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': 'http://127.0.0.1:4100',
+                                'Access-Control-Allow-Credentials': 'true'
+                            },
+                            body: JSON.stringify({ uid: uid, name: playlistSelected, vidID:videoID }) //JSON data
+                        })
+                        .then(response => {
+                            if (response.status === 403) {
+                                window.location.href = '403.html'; // Redirect to 403 page
+                                throw new Error('Forbidden'); // Throw an error to stop further execution
+                            }
+                            else if (response.status === 401) {
+                                window.location.href = '401.html'; // Redirect to 403 page
+                                throw new Error('Forbidden'); // Throw an error to stop further execution
+                            }
+                            else {
+                                document.getElementById("successMessage").innerHTML = "ADDITION SUCCESS"
+                                return response.json(); // Proceed with normal data processing
+                            }
+                        })
+                    }                          
+                </script>                
 
     <script>
         function fetchComments(){

@@ -114,6 +114,10 @@
             padding: 20px;
             height: 30vh;
         }
+
+        .playlist-link {
+            margin-right: 4px;  /* Adjust spacing as needed */
+        }
     </style>
 </head>
 <body>
@@ -144,13 +148,26 @@
                 videoGrid.removeChild(videoGrid.firstChild);
             }
         }
+        async function renderVideosWithID(videosID) {
+            const apiUrl = "http://127.0.0.1:8069/api/video";
+            const response = await fetch(apiUrl);
+            const videos = await response.json();
+            var vids = []
+            videos.forEach(video => {
+                if(videosID.includes(video["videoID"])){
+                    vids.push(video);
+                }
+            })
+            renderVideos(vids)
+        }
         function renderVideos(videos, query = "", genre = "") {
             console.log(genre)
             const videoGrid = document.querySelector('.videoGrid');
             const qlist = query.split(" ")
-            if (genre != "") {
+            if (genre == "likes") {
                 videos.forEach(video => {
-                    if(!video['_accountViewsLikesDislikes']["likes"].includes(String(localStorage.getItem("uid")))){
+                    console.log(video)
+                    if(!video['accountViewsLikesDislikes']["likes"].includes(String(localStorage.getItem("uid")))){
                         return
                     }
                     else{
@@ -244,61 +261,54 @@
                 });
             }
             else {
-                console.log("should recommend or no uid")
-                try {
-                    console.log("recommend")
-                    const apiUrl = "http://127.0.0.1:8069/api/video/recommend/" + String(localStorage.getItem("uid"));
-                    fetch(apiUrl)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(preferences => {
-                            preferences.forEach(video => {
-                                console.log(preferences)
-                                const videoItem = document.createElement('div');
-                                videoItem.classList.add('grid-item');
-                                videoItem.classList.add('video-item');
-                
-                                const videoLink = document.createElement('a');
-                                videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video" + "?videoID=" + video["videoID"];
-                
-                                const videoImage = document.createElement('img');
-                                videoImage.classList.add('video');
-                                var encode = `${video.base64}`;
-                                var step1 = encode.replace(/\\n/g, '');
-                                var step2 = step1.replace(/b'/g, '');
-                                var base64String = step2.replace(/[-:'\\]/g, '');
-                                videoImage.src = `data:image/png;base64,${base64String}`;
-                
-                                const title = document.createElement('span');
-                                title.textContent = video.name;
-                
-                                const viewCount = document.createElement('span');
-                                viewCount.textContent = `Views: ${video.views}`;
-                                viewCount.classList.add('view-count');
-                
-                                const lineBreak = document.createElement('br');
-                
-                                videoItem.appendChild(videoLink);
-                                videoLink.appendChild(videoImage);
-                                videoItem.appendChild(title);
-                                videoItem.appendChild(lineBreak);
-                                videoItem.appendChild(viewCount);
-                
-                                videoGrid.appendChild(videoItem);
-                            });
-                        })
-                        .catch(error => {
-                            console.error('Error loading preferred videos:', error);
-                        });
-                } catch (error) {
-                    console.error('Error loading preferred videos:', error);
-                }                    
-            }
+                console.log("selected playlist other than likes")
+                videos.forEach(video => {
+                    for (let word = 0; word < qlist.length; word++) {
+                        console.log(qlist[word])
+                        console.log(video['name'].toLowerCase().includes(qlist[word].toLowerCase()))
+                        if (video['name'].toLowerCase().includes(qlist[word].toLowerCase())) {
+                            const videoItem = document.createElement('div');
+                            videoItem.classList.add('grid-item');
+                            videoItem.classList.add('video-item');
 
+                            const videoLink = document.createElement('a');
+                            videoLink.href = "http://127.0.0.1:4100/corsica-frontend/video" + "?videoID=" + video["videoID"]; // Assuming video object has a 'video' property for the URL
+
+                            const videoImage = document.createElement('img');
+                            videoImage.classList.add('video');
+                            var encode = `${video.base64}`;
+                            var step1 = encode.replace(/\\n/g, '');
+                            var step2 = step1.replace(/b'/g, '');
+                            var base64String = step2.replace(/[-:'\\]/g, '');
+                            videoImage.src = `data:image/png;base64,${base64String}`;
+
+                            const title = document.createElement('span');
+                            title.textContent = video.name; // Assuming video object has a 'name' property for the title
+
+                            const viewCount = document.createElement('span');
+                            viewCount.textContent = `Views: ${video.views}`; // Assuming video object has a 'views' property
+                            viewCount.classList.add('view-count'); // Add a class for styling
+
+                            const lineBreak = document.createElement('br');
+
+                            // Append the videoLink to the videoItem
+                            videoItem.appendChild(videoLink);
+
+                            // Append the videoImage inside the videoLink
+                            videoLink.appendChild(videoImage);
+
+                            // Append the title, view count, and line break to the videoItem
+                            videoItem.appendChild(title);
+                            videoItem.appendChild(lineBreak);
+                            videoItem.appendChild(viewCount);
+
+                            // Append the videoItem to the videoGrid
+                            videoGrid.appendChild(videoItem);
+                            break;
+                        }
+                    }
+                });                    
+            }
         }
 
         // Load videos when the page is loaded
@@ -326,11 +336,57 @@
                 const response = await fetch(apiUrl);
                 const videos = await response.json();
                 clearVideos()
+                console.log(videos)
                 renderVideos(videos, "", "likes");
             } catch (error) {
                 console.error('Error loading videos:', error);
             }
         });
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const apiUrl = "http://127.0.0.1:8069/api/users/playlist";
+                const response = await fetch(apiUrl);
+                const users = await response.json();
+                const uid = localStorage.getItem("uid");
+                console.log(uid);
+                
+                users.forEach(user => {
+                    if (user["uid"] === uid) {
+                        const playlists = user["playlists"];
+                        const nav = document.querySelector('nav');
+                        const addPlaylist = document.getElementById('add');
+        
+                        // Create and insert new <a> elements for each playlist
+                        Object.keys(playlists).forEach(playlistName => {
+                            const a = document.createElement('a');
+                            a.textContent = playlistName;
+                            a.classList.add('playlist-link');  // Add class here
+                            a.addEventListener('click', () => handlePlaylistClick(playlistName));
+                            nav.insertBefore(a, addPlaylist);
+                        });
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading playlists:', error);
+            }
+        });
+        async function handlePlaylistClick(playlistName) {
+            // Replace this with the actual logic you want to perform when a playlist link is clicked
+            console.log(`Playlist clicked: ${playlistName}`);
+            const apiUrl = "http://127.0.0.1:8069/api/users/playlist";
+            const response = await fetch(apiUrl);
+            const users = await response.json();
+            var videos = [];
+            const uid = localStorage.getItem("uid")
+            users.forEach(user => {
+                if (user["uid"] === uid) {
+                    videos = user["playlists"][playlistName]
+                    console.log(videos[0])
+                    clearVideos()
+                    renderVideosWithID(videos)
+                }
+            });
+        }
     </script>
 </body>
 </html>
