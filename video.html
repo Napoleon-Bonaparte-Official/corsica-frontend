@@ -293,6 +293,13 @@
                     <textarea id="new-comment" placeholder="Write a comment..." rows="4" cols="50"></textarea>
                     <button id="post-comment" class="like-btn">Post Comment</button>
                 </div>
+            </div>
+
+        </div>
+
+        <!-- the recommended videos on the sid -->
+        <div id="container" type="recommended" class="videoGrid"></div>
+    </div>
                 <div id="playlist-container"></div> <!-- Container for playlist data -->
                 
                 <script>
@@ -618,7 +625,50 @@
                 flag_dislikes = 1;
             } 
 
-
+      
+            const url = "http://127.0.0.1:8069/api/users/playlist";
+            fetch(url, {
+                method: "GET", 
+                mode: "cors",
+                credentials: 'include'
+            })
+            .then(response => {
+                if (response.status === 403) {
+                    window.location.href = '403.html'; // Redirect to 403 page
+                    throw new Error('Forbidden'); // Throw an error to stop further execution
+                } else if (response.status === 401) {
+                    window.location.href = '401.html'; // Redirect to 401 page
+                    throw new Error('Unauthorized'); // Throw an error to stop further execution
+                } else {
+                    return response.json(); // Proceed with normal data processing
+                }
+            })
+            .then(data => {
+                const uid = localStorage.getItem("uid");
+                console.log(data);
+                let userPlaylists = {};
+        
+                data.forEach(user => {
+                    if (user["uid"] === uid) {
+                        userPlaylists = user["playlists"];
+                    }
+                });
+        
+                console.log(userPlaylists);
+        
+                const selectElement = document.querySelector('select');
+        
+                // Add options to the select element
+                Object.keys(userPlaylists).forEach(key => {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = key;
+                    selectElement.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching playlists:', error);
+            });
         });
         </script>
 </body>
