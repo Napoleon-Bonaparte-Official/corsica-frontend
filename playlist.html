@@ -164,11 +164,13 @@
             console.log(genre)
             const videoGrid = document.querySelector('.videoGrid');
             const qlist = query.split(" ")
+            // If the user specifically selects the liked videos
             if (genre == "likes") {
                 videos.forEach(video => {
                     console.log(video)
+                    // If the 
                     if(!video['accountViewsLikesDislikes']["likes"].includes(String(localStorage.getItem("uid")))){
-                        return
+                        return "error fetching videos"
                     }
                     else{
                         const videoItem = document.createElement('div');
