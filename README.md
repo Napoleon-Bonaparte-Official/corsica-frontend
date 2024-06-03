@@ -1,5 +1,14 @@
 # [Open Frontend](http://127.0.0.1:4100/corsica-frontend/)
 
+# OVERVIEW OF PROJECT
+- This is the frontend for the Corsica project, a project that cosists of a video-sharing platform that allows for user to share, create, upload, and comment on videos.
+# Features
+- Allows users to upload a video
+- Allows users to comment on pre-existing videos.
+- Allows users to watch videos
+- Includes a login system and features to change attributes of the user.
+- Playlist creation
+
 # IMPORTANT
 
 - Go to settings and configure pages, deploy from the branch, and then select the root folder. IF YOU DO NOT DO THIS YOUR PAGE WILL NOT BUILD. 
@@ -8,24 +17,15 @@
 
 ## File Names
 
-- To name a file, use the following structure (Note that dates should never be in the future and should always be in the format YYYY-MM-DD):
+index.html: Displays the homepage containing all the videos
+  - Handles genre filtering and shuffling
+playlist.html: Holds the user-specific playlists that the user has created. Displays all the videos corresponding to that playlist
 
-- Make sure that notebooks are in the notebook folder and posts are in the posts folder.
+upload.html: Takes in data for a video (title, descripition, genre, video file, video thumbnail) and uploads it to the backend.
 
-  - For markdown files in _posts:
-    - year-month-day-fileName.md
-      - GOOD EXAMPLE: 2021-08-02-First-Day.md
-      - BAD EXAMPLE: 2021-8-2-first-day.md
-      - BAD EXAMPLE: first-day.md
-      - BAD EXAMPLE: 2069-12-31-First-Day.md
+users.html: Displays a table with all the users and has options for the user to delete a user and modify a user's email.
 
-  - For jupyter notebooks in _notebooks:
-    - year-month-day-fileName.ipynb
-      - GOOD EXAMPLE: 2021-08-02-First-Day.ipynb
-      - BAD EXAMPLE: 2021-8-2-first-day.ipynb
-      - BAD EXAMPLE: first-day.ipynb
-      - BAD EXAMPLE: 2069-12-31-First-Day.ipynb
-
+video.html: Displays a video. Permits users to add comments, add to playlists, and like/dislike the video. 
 
 ## NIGHTHAWK-Pages CHANGES
 
